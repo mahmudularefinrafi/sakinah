@@ -47,7 +47,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v3/);
+  assert.match(sw, /sakinah-shell-v4/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -63,7 +63,24 @@ test("special surah page includes the selected surahs, verse meanings, filters, 
   assert.match(html, /id="surahFilters"/);
   for (const name of ["আল-ফাতিহা", "আল-ইখলাস", "আল-ফালাক", "আন-নাস", "আল-আসর", "আদ-দুহা", "আশ-শারহ"]) assert.ok(js.includes(name), name);
   assert.match(js, /verse-meaning/);
-  assert.match(html, /অর্থগুলো পাঠ-সহায়ক খসড়া/);
+  assert.match(html, /বাংলা অনুবাদ Al Quran Cloud-এর bn\.bengali সংস্করণ/);
   assert.match(sw, /"\.\/special-surahs\.html"/);
   assert.match(read("index.html"), /href="special-surahs\.html"/);
+});
+
+
+test("full Quran reader lists all 114 surahs and supports short and featured filters", () => {
+  const html = read("special-surahs.html");
+  const js = read("special-surahs.js");
+  const sw = read("service-worker.js");
+  assert.match(html, /সব ১১৪টি সূরা/);
+  assert.match(html, /সূরা ফীল থেকে নাস/);
+  assert.match(html, /id="surahDetail"/);
+  assert.match(js, /"আল-ফিল"/);
+  assert.match(js, /"আন-নাস"/);
+  assert.match(js, /"ইয়াসিন"/);
+  assert.match(js, /"আর-রহমান"/);
+  assert.match(js, /bn\.bengali/);
+  assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
+  assert.match(sw, /sakinah-shell-v4/);
 });

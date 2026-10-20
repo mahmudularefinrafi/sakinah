@@ -83,6 +83,13 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 **Content accuracy limitation:** filtering is only over the currently curated entries. The existing Bengali translations and transliterations remain labeled as needing independent review; this update does not claim scholarly verification.
 
 
+## Full Quran Surah reader (v0.6.0)
+
+- **All 114 Surahs:** browse and search by Bengali name, English name, Arabic name, or Surah number.
+- **Featured Surahs:** includes Al-Fatiha, Al-Kahf, Ya-Sin, Ar-Rahman, Al-Waqiah, Al-Mulk, and selected short Surahs; a dedicated filter shows Surah Al-Fil (105) through An-Nas (114).
+- **Complete text on demand:** loads the full Arabic text and verse-by-verse Bengali translation (`bn.bengali`) from Al Quran Cloud when a Surah is selected. First load needs an internet connection; previously opened Surahs are cached locally for later/offline reading where browser storage permits.
+- **Source transparency:** links to Quran.com and labels the Bengali translation edition; users should compare religious text and interpretation with trusted sources.
+
 ## Special Surah reading section (v0.5.0)
 
 - **Special Surahs (`special-surahs.html`)**: adds Al-Fatiha, Al-Ikhlas, Al-Falaq, An-Nas, Al-Asr, Ad-Duha, and Ash-Sharh with Arabic text and verse-by-verse Bengali meanings.
