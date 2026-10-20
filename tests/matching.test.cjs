@@ -28,6 +28,16 @@ test("matches study/exam intent and ranks a relevant dua first", () => {
   assert.ok(results.every(result => result.score > 0));
 });
 
+test("matches natural Bengali sadness phrasing", () => {
+  const results = matcher.matchDuas("আমার মন খুব খারাপ", duas);
+  assert.ok(results.some(result => ["21-83", "21-87", "3-8"].includes(result.dua.id)));
+});
+
+test("matches Bengali inflections for hardship", () => {
+  const results = matcher.matchDuas("আমি বিপদে পড়েছি", duas);
+  assert.ok(results.some(result => result.dua.id === "21-87"));
+});
+
 test("matches forgiveness intent", () => {
   const results = matcher.matchDuas("আমি গুনাহ করেছি, ক্ষমা চাই", duas);
   assert.equal(results[0].dua.id, "7-23");
