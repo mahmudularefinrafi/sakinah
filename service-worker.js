@@ -1,5 +1,5 @@
 /* Offline-first shell cache for the static Sakinah PWA. */
-const CACHE_NAME = "sakinah-shell-v7";
+const CACHE_NAME = "sakinah-shell-v8";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -11,6 +11,9 @@ const APP_SHELL = [
   "./amal.html",
   "./amal.css",
   "./amal.js",
+  "./islamic-tools.html",
+  "./islamic-tools.css",
+  "./islamic-tools.js",
   "./special-surahs.html",
   "./special-surahs.css",
   "./special-surahs.js",

@@ -50,7 +50,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v7/);
+  assert.match(sw, /sakinah-shell-v8/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -85,7 +85,7 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v7/);
+  assert.match(sw, /sakinah-shell-v8/);
 });
 
 
@@ -138,7 +138,7 @@ test("local tasbih and daily amal tracker are private, navigable, and cached off
   assert.match(js, /ফজরের নামাজ/);
   assert.match(js, /সকালবেলার যিকির/);
   assert.match(css, /@media\(max-width:700px\)/);
-  assert.match(sw, /sakinah-shell-v7/);
+  assert.match(sw, /sakinah-shell-v8/);
   for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
   for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
     assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
@@ -152,4 +152,22 @@ test("mobile navigation opens a dropdown on small screens", () => {
   assert.match(css, /\.mobile-menu-toggle\{display:none/);
   assert.match(nav, /button\.addEventListener\("click"/);
   assert.match(nav, /aria-expanded/);
+});
+
+
+test("Islamic tools page exposes prayer times, Qibla, Hijri/Ramadan calendar and optional reminders", () => {
+  const html = read("islamic-tools.html");
+  const js = read("islamic-tools.js");
+  const sw = read("service-worker.js");
+  assert.match(html, /id="prayerGrid"/);
+  assert.match(html, /id="compassNeedle"/);
+  assert.match(html, /id="hijriLarge"/);
+  assert.match(html, /id="ramadanCalendar"/);
+  assert.match(html, /id="enableReminders"/);
+  assert.match(html, /পেজটি খোলা থাকতে হবে/);
+  assert.ok(js.includes("hijriCalendar"));
+  assert.ok(js.includes("Notification.requestPermission"));
+  assert.ok(js.includes("localStorage.setItem(KEY"));
+  assert.ok(sw.includes('"./islamic-tools.html"'));
+  assert.ok(sw.includes('"./islamic-tools.js"'));
 });
