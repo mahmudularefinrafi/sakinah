@@ -67,3 +67,20 @@ test("special surah page includes the selected surahs, verse meanings, filters, 
   assert.match(sw, /"\.\/special-surahs\.html"/);
   assert.match(read("index.html"), /href="special-surahs\.html"/);
 });
+
+
+test("full Quran reader lists all 114 surahs and supports short and featured filters", () => {
+  const html = read("special-surahs.html");
+  const js = read("special-surahs.js");
+  const sw = read("service-worker.js");
+  assert.match(html, /সব ১১৪টি সূরা/);
+  assert.match(html, /সূরা ফীল থেকে নাস/);
+  assert.match(html, /id="surahDetail"/);
+  assert.match(js, /"আল-ফিল"/);
+  assert.match(js, /"আন-নাস"/);
+  assert.match(js, /"ইয়াসিন"/);
+  assert.match(js, /"আর-রহমান"/);
+  assert.match(js, /bn\.bengali/);
+  assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
+  assert.match(sw, /sakinah-shell-v4/);
+});
