@@ -10,7 +10,7 @@ test("homepage stays focused on the feeling prompt and a small dua selection", (
   assert.match(html, /<body data-page="home">/);
   assert.match(html, /id="feeling"/);
   assert.match(html, /id="dailyDuaCard"/);
-  assert.match(html, /class="home-daily-dua-link"/);
+  assert.match(html, /id="other-duas" class="home-daily-dua-link"/);
   assert.match(html, /href="daily-duas\.html"/);
   assert.doesNotMatch(html, /আপনার জন্য নির্বাচিত/);
   assert.doesNotMatch(html, /class="home-featured-grid dua-grid" id="libraryGrid"/);
@@ -50,7 +50,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -251,4 +251,22 @@ test("installed PWA checks for service worker updates and reloads updated client
   assert.match(sw, /sakinah-shell-v12/);
   assert.match(sw, /self\.skipWaiting\(\)/);
   assert.match(sw, /self\.clients\.claim\(\)/);
+});
+
+
+test("homepage has only the daily dua and unified Other Duas section", () => {
+  const home = read("index.html");
+  const hub = read("other-duas.html");
+  const sw = read("service-worker.js");
+  assert.match(home, /id="dailyDuaCard"/);
+  assert.match(home, /id="other-duas"/);
+  assert.match(home, /href="other-duas\.html"/);
+  assert.doesNotMatch(home, /href="daily-duas\.html">দৈনন্দিন দোয়া<\/a>/);
+  assert.doesNotMatch(home, /href="library\.html">দোয়ার সংগ্রহ<\/a>/);
+  assert.match(hub, /দৈনন্দিন জীবনের দোয়া/);
+  assert.match(hub, /কুরআনের দোয়া সংগ্রহ/);
+  assert.match(hub, /বিশেষ সূরা ও অর্থ/);
+  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /"\.\/other-duas\.html"/);
+  assert.match(sw, /"\.\/other-duas\.css"/);
 });
