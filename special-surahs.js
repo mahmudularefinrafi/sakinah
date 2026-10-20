@@ -3,7 +3,7 @@ const FEATURED = [1,18,36,55,56,67,78,93,94,97,103,105,106,107,108,109,110,111,1
 const SHORT_SURAHS = Array.from({length:10},(_,i)=>105+i);
 const API = "https://api.alquran.cloud/v1";
 const $ = selector => document.querySelector(selector);
-let activeFilter = "featured";
+let activeFilter = "all";
 let selectedNumber = null;
 let allMetadata = [];
 const CACHE_PREFIX = "sakinah-surah-v1-";
