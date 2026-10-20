@@ -25,6 +25,16 @@
     return duas[((dayNumber % duas.length) + duas.length) % duas.length];
   }
 
+  function selectDailyDuas(dateKey, duas, count = 2) {
+    if (!Array.isArray(duas) || duas.length === 0) return [];
+    if (!Number.isInteger(count) || count < 1 || count > 2) throw new TypeError("count must be 1 or 2");
+    const first = selectDailyDua(dateKey, duas);
+    if (!first) return [];
+    if (count === 1 || duas.length === 1) return [first];
+    const index = duas.indexOf(first);
+    return [first, duas[(index + 1) % duas.length]];
+  }
+
   function buildShareText(dua) {
     if (!dua) throw new TypeError("A dua record is required");
     return [
@@ -42,5 +52,5 @@
     return "https://quran.com/" + parts[0] + "/" + parts[1];
   }
 
-  return { REVIEW, selectDailyDua, buildShareText, sourceUrl };
+  return { REVIEW, selectDailyDua, selectDailyDuas, buildShareText, sourceUrl };
 });
