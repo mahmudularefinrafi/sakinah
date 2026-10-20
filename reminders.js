@@ -2,6 +2,8 @@
 "use strict";
 const button=document.getElementById("enableReminders");
 const status=document.getElementById("reminderStatus");
+const strip=document.getElementById("reminderStrip");
+function hidePrompt(){if(strip){strip.hidden=true;}}
 if(!button||!("Notification" in window)||!("serviceWorker" in navigator)){if(button){button.disabled=true;status.textContent="এই ব্রাউজারে নোটিফিকেশন সমর্থিত নয়।";}return;}
 const messages=[
 {time:"09:00",title:"সাকীনা • সকালের স্মরণ",body:"আজকের দিনটি আল্লাহর স্মরণে শুরু করেছেন তো? কিছু দরুদ পাঠের সময় করে নিন।"},
