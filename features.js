@@ -165,26 +165,83 @@
     return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("PNG generation failed")), "image/png"));
   }
 
+  let activeCardUrl = null;
+  function ensureCardDialog() {
+    let style = document.getElementById("dua-card-dialog-styles");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "dua-card-dialog-styles";
+      style.textContent = `
+        .dua-card-dialog-backdrop[hidden]{display:none!important}.dua-card-dialog-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(10,20,14,.72);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+        .dua-card-dialog{width:min(100%,460px);max-height:92dvh;overflow:auto;background:var(--surface,#fff);color:var(--text,#17251b);border:1px solid var(--border,#dbe5dc);border-radius:20px;padding:16px;box-shadow:0 20px 70px #0004}
+        .dua-card-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+        .dua-card-dialog-head h2{font-size:1.15rem;margin:0}
+        .dua-card-dialog-close{font-size:1.4rem;line-height:1;border:0;background:transparent;color:inherit;padding:8px;cursor:pointer}
+        .dua-card-preview{display:block;width:100%;height:auto;max-height:58dvh;object-fit:contain;border-radius:12px;background:#f8faf5}
+        .dua-card-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+        .dua-card-dialog-actions button,.dua-card-dialog-actions a{display:flex;justify-content:center;align-items:center;text-align:center;min-height:46px;padding:10px;border-radius:12px;border:1px solid var(--border,#dbe5dc);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+        .dua-card-save{background:#28634b!important;color:#fff!important;border-color:#28634b!important}
+        .dua-card-dialog-note{font-size:.84rem;line-height:1.5;opacity:.78;margin:10px 2px 0}
+        @media(max-width:380px){.dua-card-dialog-actions{grid-template-columns:1fr}}
+      `;
+      document.head.append(style);
+    }
+    let backdrop = document.getElementById("duaCardDialog");
+    if (!backdrop) {
+      backdrop = document.createElement("div");
+      backdrop.id = "duaCardDialog";
+      backdrop.className = "dua-card-dialog-backdrop";
+      backdrop.hidden = true;
+      backdrop.innerHTML = '<section class="dua-card-dialog" role="dialog" aria-modal="true" aria-labelledby="duaCardDialogTitle"><div class="dua-card-dialog-head"><h2 id="duaCardDialogTitle">দোয়ার ছবি তৈরি হয়েছে</h2><button type="button" class="dua-card-dialog-close" data-close-dua-card aria-label="বন্ধ করুন">×</button></div><img class="dua-card-preview" alt="তৈরি করা কুরআনের দোয়ার ছবি"><div class="dua-card-dialog-actions"><a class="dua-card-save" data-download-dua-card download="sakinah-dua.png" href="#">গ্যালারিতে সেভ করুন</a><button type="button" data-share-dua-card>শেয়ার করুন</button></div><p class="dua-card-dialog-note">সেভ বাটনে চাপলে PNG ছবিটি ডাউনলোড হবে। ফোনের Downloads/Photos অ্যাপে ছবিটি খুঁজে নিন।</p></section>';
+      document.body.append(backdrop);
+      backdrop.addEventListener("click", event => {
+        if (event.target === backdrop || event.target.closest("[data-close-dua-card]")) closeCardDialog();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !backdrop.hidden) closeCardDialog();
+      });
+      backdrop.querySelector("[data-share-dua-card]").addEventListener("click", async () => {
+        const link = backdrop.querySelector("[data-download-dua-card]");
+        if (!activeCardUrl) return;
+        try {
+          const response = await fetch(activeCardUrl);
+          const blob = await response.blob();
+          const file = new File([blob], link.download, { type: "image/png" });
+          if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+            await navigator.share({ title: "সাকীনা — কুরআনের দোয়া", files: [file] });
+          } else {
+            window.open(activeCardUrl, "_blank", "noopener");
+            toast("ছবিটি খুলে মেনু থেকে ডাউনলোড করুন");
+          }
+        } catch (error) {
+          if (!error || error.name !== "AbortError") toast("শেয়ার করা যায়নি। সেভ বাটন ব্যবহার করুন");
+        }
+      });
+    }
+    return backdrop;
+  }
+  function closeCardDialog() {
+    const backdrop = document.getElementById("duaCardDialog");
+    if (backdrop) backdrop.hidden = true;
+    if (activeCardUrl) URL.revokeObjectURL(activeCardUrl);
+    activeCardUrl = null;
+  }
   async function shareCard(duaId) {
     const dua = duas.find(item => item.id === duaId);
     if (!dua) return;
     try {
       const blob = await makeShareCard(dua);
-      const file = new File([blob], "sakinah-dua-" + dua.id + ".png", { type: "image/png" });
-      if (navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
-        await navigator.share({ title: "সাকীনা — কুরআনের দোয়া", text: dua.reference, files: [file] });
-        toast("দোয়ার কার্ড শেয়ার করার জন্য প্রস্তুত");
-      } else {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = file.name;
-        document.body.append(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        toast("দোয়ার ছবি ডাউনলোড হয়েছে");
-      }
+      const filename = "sakinah-dua-" + dua.id + ".png";
+      if (activeCardUrl) URL.revokeObjectURL(activeCardUrl);
+      activeCardUrl = URL.createObjectURL(blob);
+      const dialog = ensureCardDialog();
+      const preview = dialog.querySelector(".dua-card-preview");
+      const saveLink = dialog.querySelector("[data-download-dua-card]");
+      preview.src = activeCardUrl;
+      saveLink.href = activeCardUrl;
+      saveLink.download = filename;
+      dialog.hidden = false;
+      dialog.querySelector("[data-close-dua-card]").focus();
     } catch (error) {
       if (error && error.name === "AbortError") return;
       toast("ছবি তৈরি করা যায়নি। আবার চেষ্টা করুন");
