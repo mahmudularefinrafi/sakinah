@@ -153,3 +153,21 @@ test("mobile navigation opens a dropdown on small screens", () => {
   assert.match(nav, /button\.addEventListener\("click"/);
   assert.match(nav, /aria-expanded/);
 });
+
+
+test("Islamic tools page exposes prayer times, Qibla, Hijri/Ramadan calendar and optional reminders", () => {
+  const html = read("islamic-tools.html");
+  const js = read("islamic-tools.js");
+  const sw = read("service-worker.js");
+  assert.match(html, /id="prayerGrid"/);
+  assert.match(html, /id="compassNeedle"/);
+  assert.match(html, /id="hijriLarge"/);
+  assert.match(html, /id="ramadanCalendar"/);
+  assert.match(html, /id="enableReminders"/);
+  assert.match(html, /পেজটি খোলা থাকতে হবে/);
+  assert.match(js, /hijriCalendar/);
+  assert.match(js, /Notification\\.requestPermission/);
+  assert.match(js, /localStorage\\.setItem\\(KEY/);
+  assert.match(sw, /"\\.\\/islamic-tools\\.html"/);
+  assert.match(sw, /"\\.\\/islamic-tools\\.js"/);
+});
