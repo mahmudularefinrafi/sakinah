@@ -88,3 +88,46 @@ html[data-theme="dark"] .dua-card::before{background:linear-gradient(90deg,#3b60
  .card-actions .small-button{min-height:42px}
  .chip,.category-pill{min-height:38px;padding-inline:13px}
 }
+
+/* Separate page layouts: quiet home, focused results, full library. */
+.home-featured{padding-top:58px;padding-bottom:62px}
+.home-featured .section-heading{align-items:end;margin-bottom:22px}
+.home-featured-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.featured-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.featured-footer>span{font-size:11px;color:var(--muted)}
+.featured-footer .primary-button{display:inline-flex;align-items:center;gap:10px;text-decoration:none;width:auto}
+body[data-page="library"] .hero,
+body[data-page="library"] #results,
+body[data-page="library"] #daily,
+body[data-page="library"] #how,
+body[data-page="library"] .gentle-note{display:none!important}
+body[data-page="results"] .hero,
+body[data-page="results"] #daily,
+body[data-page="results"] #library,
+body[data-page="results"] #collections,
+body[data-page="results"] #how,
+body[data-page="results"] .gentle-note{display:none!important}
+body[data-page="results"] #results{max-width:1050px;margin:0 auto;min-height:58vh;padding:52px 24px 72px}
+body[data-page="results"] .results-section[hidden]{display:none!important}
+body[data-page="results"] .section-heading{align-items:center;margin-bottom:14px}
+body[data-page="results"] .section-heading h2{font-size:clamp(25px,4vw,36px);line-height:1.5}
+body[data-page="results"] .searched-feeling{display:inline-block;max-width:100%;margin:8px 0 12px;padding:8px 13px;border-radius:12px;background:var(--mint);color:var(--green);font-size:12px;overflow-wrap:anywhere}
+body[data-page="results"] .results-intro{max-width:720px;margin:0 0 24px;color:var(--muted);font-size:13px;line-height:1.9}
+.results-source-note{margin:22px 0 0;padding:13px 15px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.9}
+.results-footer{margin-top:0}
+body[data-page="library"] .library-section{padding-top:50px}
+body[data-page="library"] .collections-section{padding-top:48px}
+html[data-theme="dark"] .featured-footer{border-color:var(--line)}
+html[data-theme="dark"] body[data-page="results"] .searched-feeling{background:#203528;color:#c6e3cb}
+@media(max-width:760px){
+ .home-featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page="results"] #results{padding:35px 17px 54px}
+}
+@media(max-width:560px){
+ .home-featured{padding:42px 16px}
+ .home-featured-grid{grid-template-columns:1fr}
+ .featured-footer{align-items:stretch;flex-direction:column}
+ .featured-footer .primary-button{width:100%;justify-content:center}
+ body[data-page="results"] .section-heading{align-items:flex-start;flex-direction:column;gap:10px}
+ body[data-page="results"] .section-heading .text-button{padding:7px 0}
+}

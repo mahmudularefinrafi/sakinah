@@ -1,8 +1,8 @@
 {
   "name": "sakinah",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
-  "description": "A privacy-first Bengali Quranic dua finder with searchable curated library, local collections, and offline PWA support",
+  "description": "A privacy-first Bengali Quranic dua companion with separate home, search results, library, personal collections, and offline PWA support",
   "scripts": {
     "test": "node --test"
   },
