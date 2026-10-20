@@ -113,7 +113,7 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - অনুসন্ধান ও বিষয়ভিত্তিক ফিল্টার, আরবি পাঠ, বাংলা উচ্চারণ/অর্থ এবং সূত্রের লিংক রয়েছে।
 - আয়না দেখার জন্য নির্দিষ্ট সহিহ দোয়ার প্রমাণ স্পষ্ট না হওয়ায় প্রচলিত বাক্যকে সহিহ হাদিস হিসেবে উপস্থাপন করা হয়নি।
 - হোমপেজের “আরও কিছু দোয়া” কার্ড-সেকশন সরিয়ে আলাদা দৈনন্দিন দোয়ার পাতায় যাওয়ার CTA রাখা হয়েছে।
-- Service worker cache version: `sakinah-shell-v6`.
+- Service worker cache version: `sakinah-shell-v9`.
 
 
 ## Local Tasbih and Daily Amal Tracker (v0.7.0)
