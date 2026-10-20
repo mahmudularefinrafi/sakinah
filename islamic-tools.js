@@ -1,19 +1,24 @@
 (function () {
   "use strict";
-  const DEFAULT = { name: "লাকসাম, বাংলাদেশ", lat: 23.24, lon: 91.12 };
+  const DEFAULT = { name: "লাকসাম, বাংলাদেশ", lat: 23.24, lon: 91.12, district: "Cumilla" };
   const KEY = "sakinah-islamic-tools-v1";
   const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
   const bn = { Fajr: "ফজর", Dhuhr: "যোহর", Asr: "আসর", Maghrib: "মাগরিব", Isha: "এশা" };
   const $ = id => document.getElementById(id);
   const state = { ...DEFAULT, method: 1, timings: null, qibla: null, hijriYear: null, reminders: [], timer: null, notified: new Set() };
+  let userPickedRamadanYear = false;
   try { Object.assign(state, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch {}
   if (!Number.isFinite(Number(state.lat)) || !Number.isFinite(Number(state.lon))) Object.assign(state, DEFAULT);
   $("locationName").value = state.name || DEFAULT.name;
+  $("districtSelect").value = state.district || "Cumilla";
+  if (!$("districtSelect").value) $("districtSelect").value = "custom";
+  const currentGregorianYear = new Date().getFullYear();
+  if ([...$("calendarYear").options].some(option => Number(option.value) === currentGregorianYear)) $("calendarYear").value = String(currentGregorianYear);
   $("calculationMethod").value = String(state.method || 1);
   if (Array.isArray(state.reminders) && state.reminders.length) document.querySelectorAll("#reminderOptions input").forEach(input => { input.checked = state.reminders.includes(input.value); });
 
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify({ name: state.name, lat: state.lat, lon: state.lon, method: state.method, reminders: state.reminders })); } catch {}
+    try { localStorage.setItem(KEY, JSON.stringify({ name: state.name, lat: state.lat, lon: state.lon, method: state.method, reminders: state.reminders, district: state.district })); } catch {}
   }
   function datePath(date = new Date()) {
     return String(date.getDate()).padStart(2, "0") + "-" + String(date.getMonth() + 1).padStart(2, "0") + "-" + date.getFullYear();
@@ -60,6 +65,10 @@
     if (h) {
       state.hijriYear = parseInt(h.year, 10);
       state.hijriMonth = parseInt(h.month?.number, 10);
+      if (!userPickedRamadanYear && $("ramadanHijriYear")) {
+        const upcomingRamadanYear = state.hijriYear + (state.hijriMonth > 9 ? 1 : 0);
+        if ([...$("ramadanHijriYear").options].some(option => Number(option.value) === upcomingRamadanYear)) $("ramadanHijriYear").value = String(upcomingRamadanYear);
+      }
       $("hijriDate").textContent = [h.day, h.month?.en, h.year, "হিজরি"].filter(Boolean).join(" ");
       $("hijriLarge").textContent = [h.day, h.month?.ar || h.month?.en, h.year, "হিজরি"].filter(Boolean).join(" ");
       $("hijriGregorian").textContent = data.date?.readable || bengaliDate();
@@ -87,9 +96,11 @@
       $("locationStatus").textContent = "সময় আনতে সমস্যা হয়েছে। লোকেশন ও ইন্টারনেট পরীক্ষা করুন।";
     }
   }
-  function setLocation(name, lat, lon) {
-    state.name = name; state.lat = Number(lat); state.lon = Number(lon); state.timings = null;
-    $("locationName").value = name; save(); renderQibla(); loadPrayerTimes();
+  function setLocation(name, lat, lon, district = "custom") {
+    state.name = name; state.lat = Number(lat); state.lon = Number(lon); state.district = district; state.timings = null;
+    $("locationName").value = name;
+    $("districtSelect").value = district;
+    save(); renderQibla(); loadPrayerTimes();
   }
   $("searchCity").addEventListener("click", async () => {
     const query = $("locationName").value.trim();
@@ -107,12 +118,35 @@
     } catch { $("locationStatus").textContent = "শহর পাওয়া যায়নি। বাংলা বা ইংরেজিতে শহরের নাম লিখে আবার চেষ্টা করুন।"; }
   });
   $("locationName").addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); $("searchCity").click(); } });
+  $("districtSelect").addEventListener("change", async () => {
+    const district = $("districtSelect").value;
+    if (district === "custom") {
+      state.district = "custom"; save();
+      $("locationStatus").textContent = "অন্য শহর বা নিজের অবস্থান ব্যবহার করুন; শহরের নাম লিখে খুঁজুন।";
+      return;
+    }
+    $("locationStatus").textContent = "জেলার অবস্থান খোঁজা হচ্ছে…";
+    const queryName = district === "Coxs Bazar" ? "Cox's Bazar" : district;
+    try {
+      const response = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(queryName + ", Bangladesh") + "&count=10&language=en&format=json&countryCode=BD");
+      if (!response.ok) throw new Error("geocoding failed");
+      const json = await response.json();
+      const places = (json.results || []).filter(place => String(place.country_code || "").toUpperCase() === "BD");
+      const norm = value => String(value || "").toLowerCase().replace(/[^a-z]/g, "");
+      const place = places.find(item => norm(item.name) === norm(queryName)) || places.find(item => norm(item.name).includes(norm(queryName)) || norm(queryName).includes(norm(item.name))) || places[0];
+      if (!place) throw new Error("district not found");
+      setLocation(district + ", বাংলাদেশ", place.latitude, place.longitude, district);
+      $("locationStatus").textContent = district + " জেলার কাছাকাছি অবস্থান ধরে সময় গণনা করা হচ্ছে।";
+    } catch {
+      $("locationStatus").textContent = "এই জেলার অবস্থান পাওয়া যায়নি। আবার চেষ্টা করুন অথবা শহরের নাম লিখে খুঁজুন।";
+    }
+  });
   $("useLocation").addEventListener("click", () => {
     if (!navigator.geolocation) { $("locationStatus").textContent = "এই ব্রাউজারে লোকেশন সুবিধা নেই।"; return; }
     $("locationStatus").textContent = "লোকেশনের অনুমতি অপেক্ষা করছি…";
     navigator.geolocation.getCurrentPosition(pos => setLocation("আমার বর্তমান অবস্থান", pos.coords.latitude, pos.coords.longitude), () => { $("locationStatus").textContent = "লোকেশন পাওয়া যায়নি বা অনুমতি দেওয়া হয়নি। লাকসাম ব্যবহার করতে পারেন।"; }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 });
   });
-  $("loadDefaultLocation").addEventListener("click", () => { $("calculationMethod").value = "1"; state.method = 1; setLocation(DEFAULT.name, DEFAULT.lat, DEFAULT.lon); });
+  $("loadDefaultLocation").addEventListener("click", () => { $("calculationMethod").value = "1"; state.method = 1; setLocation(DEFAULT.name, DEFAULT.lat, DEFAULT.lon, "Cumilla"); });
   $("refreshPrayerTimes").addEventListener("click", () => { state.method = Number($("calculationMethod").value); save(); loadPrayerTimes(); });
   $("calculationMethod").addEventListener("change", () => { state.method = Number($("calculationMethod").value); save(); loadPrayerTimes(); });
   $("locationName").addEventListener("change", () => { state.name = $("locationName").value.trim() || DEFAULT.name; save(); });
@@ -132,6 +166,26 @@
     $("compassNeedle").style.transform = "rotate(" + (state.qibla - heading) + "deg)";
     $("qiblaInstructions").textContent = "ফোনের সেন্সর অনুযায়ী কিবলার আপেক্ষিক দিক দেখানো হচ্ছে।";
   }
+  function renderAnnualCalendar(year) {
+    const monthNames = Array.from({ length: 12 }, (_, month) => new Intl.DateTimeFormat("bn-BD", { month: "long" }).format(new Date(year, month, 15, 12)));
+    const weekdays = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহঃ", "শুক্র", "শনি"];
+    const hijriFormatter = new Intl.DateTimeFormat("bn-BD-u-ca-islamic-umalqura", { day: "numeric", month: "short" });
+    const today = new Date();
+    $("annualCalendar").innerHTML = monthNames.map((monthName, month) => {
+      const firstWeekday = new Date(year, month, 1, 12).getDay();
+      const days = new Date(year, month + 1, 0, 12).getDate();
+      let cells = weekdays.map(day => '<div class="annual-weekday">' + day + '</div>').join("");
+      for (let blank = 0; blank < firstWeekday; blank++) cells += '<div class="annual-day empty" aria-hidden="true"></div>';
+      for (let day = 1; day <= days; day++) {
+        const date = new Date(year, month, day, 12);
+        const hijri = hijriFormatter.format(date);
+        const isToday = date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
+        cells += '<div class="annual-day' + (isToday ? ' is-today' : '') + '"' + (isToday ? ' aria-current="date"' : '') + '><span class="annual-gregorian">' + new Intl.NumberFormat("bn-BD").format(day) + '</span><span class="annual-hijri">' + hijri + '</span></div>';
+      }
+      return '<article class="annual-month"><h3>' + monthName + ' ' + new Intl.NumberFormat("bn-BD").format(year) + '</h3><div class="annual-grid">' + cells + '</div></article>';
+    }).join("");
+  }
+  $("calendarYear").addEventListener("change", () => renderAnnualCalendar(Number($("calendarYear").value)));
   function gregorianLabel(item) {
     const g = item.date?.gregorian;
     return g?.day && g?.month?.en ? g.day + " " + g.month.en : item.date?.readable || "—";
@@ -143,13 +197,15 @@
     if (!state.hijriYear) { $("ramadanCalendar").innerHTML = '<p class="tools-footnote">হিজরি বছর নির্ণয় করা যায়নি। ইন্টারনেট সংযোগ দিয়ে আবার চেষ্টা করুন।</p>'; return; }
     $("ramadanCalendar").innerHTML = '<p class="tools-footnote">রমজানের ক্যালেন্ডার লোড হচ্ছে…</p>';
     try {
-      const ramadanYear = state.hijriMonth > 9 ? state.hijriYear + 1 : state.hijriYear;
+      const ramadanYear = Number($("ramadanHijriYear").value || state.hijriYear);
+      if (!Number.isInteger(ramadanYear) || ramadanYear < 1400 || ramadanYear > 1600) throw new Error("invalid Hijri year");
       const rows = await api("hijriCalendar/" + ramadanYear + "/9");
       if (!Array.isArray(rows) || !rows.length) throw new Error("empty");
       $("ramadanCalendar").innerHTML = '<table class="ramadan-table"><thead><tr><th>রমজান</th><th>তারিখ</th><th>সেহরির শেষ (ফজর)</th><th>ইফতার (মাগরিব)</th></tr></thead><tbody>' + rows.map((item, i) => '<tr><td>' + (item.date?.hijri?.day || i + 1) + '</td><td>' + gregorianLabel(item) + '</td><td>' + clock(item.timings?.Fajr) + '</td><td>' + clock(item.timings?.Maghrib) + '</td></tr>').join("") + '</tbody></table>';
     } catch { $("ramadanCalendar").innerHTML = '<p class="tools-footnote">রমজানের ক্যালেন্ডার আনা যায়নি। ইন্টারনেট সংযোগ দিয়ে আবার চেষ্টা করুন।</p>'; }
   }
   $("loadRamadan").addEventListener("click", loadRamadan);
+  $("ramadanHijriYear").addEventListener("change", () => { userPickedRamadanYear = true; });
   function chosenReminders() { return Array.from(document.querySelectorAll("#reminderOptions input:checked")).map(el => el.value); }
   function updateReminderStatus() {
     if (state.reminders?.length && !state.timer) $("reminderStatus").textContent = "আগে নির্বাচিত: " + state.reminders.map(key => bn[key]).join(", ") + "। চালু করতে আবার রিমাইন্ডার বাটনে চাপুন।";
@@ -184,5 +240,6 @@
   }
   document.addEventListener("visibilitychange", () => { if (!document.hidden) loadPrayerTimes(); });
   renderQibla();
+  renderAnnualCalendar(Number($("calendarYear").value));
   loadPrayerTimes();
 })();
