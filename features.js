@@ -172,7 +172,7 @@
       style = document.createElement("style");
       style.id = "dua-card-dialog-styles";
       style.textContent = `
-        .dua-card-dialog-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(10,20,14,.72);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+        .dua-card-dialog-backdrop[hidden]{display:none!important}.dua-card-dialog-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(10,20,14,.72);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
         .dua-card-dialog{width:min(100%,460px);max-height:92dvh;overflow:auto;background:var(--surface,#fff);color:var(--text,#17251b);border:1px solid var(--border,#dbe5dc);border-radius:20px;padding:16px;box-shadow:0 20px 70px #0004}
         .dua-card-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
         .dua-card-dialog-head h2{font-size:1.15rem;margin:0}
