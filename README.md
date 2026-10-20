@@ -54,3 +54,17 @@ Requires Node.js 18 or later.
 ```bash
 npm test
 ```
+
+
+## Daily Dua, content review, and share cards
+
+- **Daily Dua:** selects one item deterministically for the visitor's local calendar date; consecutive dates rotate through the collection.
+- **Dua Share Card:** creates a locally rendered PNG with Arabic text, Bengali meaning, optional transliteration, and the surah/ayah reference. Supported mobile browsers can share the image; otherwise it downloads.
+- **Content review transparency:** each existing entry links to its Quran.com surah/ayah page. The app explicitly labels Bengali meaning and transliteration as awaiting independent review; it does not falsely mark the collection as fully verified.
+- **Privacy:** share-card rendering happens in the browser. No emotional text or dua content is sent to a backend.
+
+### Tests
+
+Run `npm test` with Node.js 18 or later. The feature tests cover date-based selection, invalid dates, share text, source URL validation, and honest review labels.
+
+**Content verification limitation:** source links make comparison possible, but a link alone is not proof that every Arabic excerpt, Bengali translation, and pronunciation has been independently reviewed. Complete that review against a trusted mushaf and reliable Bengali translation before describing the whole library as verified.
