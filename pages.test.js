@@ -11,10 +11,11 @@ test("homepage stays focused on the feeling prompt and a small dua selection", (
   assert.match(html, /id="feeling"/);
   assert.match(html, /id="dailyDuaCard"/);
   assert.match(html, /id="other-duas" class="home-daily-dua-link"/);
-  assert.match(html, /href="daily-duas\.html"/);
+  assert.match(html, /href="other-duas\.html"/);
+  assert.doesNotMatch(html, /href="daily-duas\.html">দৈনন্দিন দোয়া<\/a>/);
   assert.doesNotMatch(html, /আপনার জন্য নির্বাচিত/);
   assert.doesNotMatch(html, /class="home-featured-grid dua-grid" id="libraryGrid"/);
-  assert.match(html, /href="library\.html"/);
+  assert.doesNotMatch(html, /href="library\.html">দোয়ার সংগ্রহ<\/a>/);
   assert.doesNotMatch(html, /id="libraryQuery"/);
   assert.doesNotMatch(html, /id="collectionGrid"/);
   assert.doesNotMatch(html, /id="collections" class="collections-section"/);
@@ -52,6 +53,7 @@ test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
   assert.match(sw, /sakinah-shell-v13/);
   assert.match(sw, /"\.\/results\.html"/);
+  assert.match(sw, /"\.\/other-duas\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
 });
@@ -90,7 +92,7 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
 
 
 test("mobile navigation is available on every page and the service worker caches each route separately", () => {
-  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html", "amal.html"]) {
+  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html", "other-duas.html", "amal.html"]) {
     const html = read(name);
     assert.match(html, /id="mobileMenuToggle"/, name + " has mobile menu button");
     assert.match(html, /id="primaryNavigation"/, name + " has navigation target");
