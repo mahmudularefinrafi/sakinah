@@ -11,6 +11,11 @@ A minimal, responsive Bengali-first web app that helps people discover Quranic s
 - Responsive mobile-first layout and reduced-motion support
 - No backend, no API key, and no network submission of emotional text
 
+## Installed mobile app navigation
+- The bottom navigation is shown only when Sakinah is installed and opened in standalone display mode on a mobile-width screen; the normal website navigation remains unchanged.
+- Bottom tabs provide Home, daily duas, saved duas, and a menu for personal collections, Quran/surahs, tasbih and amal, Islamic tools, theme settings, and offline-use notes.
+- Saved duas and personal lists remain in local browser storage. Individual ayah/hadith downloads are not implemented; offline access depends on cached pages and assets.
+
 ## Run locally
 No build step is needed. Open index.html in a browser, or serve this folder with any static file server. For example, run python -m http.server 8000 and visit http://localhost:8000.
 
