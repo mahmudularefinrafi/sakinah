@@ -192,7 +192,7 @@
       backdrop.id = "duaCardDialog";
       backdrop.className = "dua-card-dialog-backdrop";
       backdrop.hidden = true;
-      backdrop.innerHTML = '<section class="dua-card-dialog" role="dialog" aria-modal="true" aria-labelledby="duaCardDialogTitle"><div class="dua-card-dialog-head"><h2 id="duaCardDialogTitle">দোয়ার ছবি তৈরি হয়েছে</h2><button type="button" class="dua-card-dialog-close" data-close-dua-card aria-label="বন্ধ করুন">×</button></div><img class="dua-card-preview" alt="তৈরি করা কুরআনের দোয়ার ছবি"><div class="dua-card-dialog-actions"><a class="dua-card-save" data-download-dua-card download="sakinah-dua.png" href="#">গ্যালারিতে সেভ করুন</a><button type="button" data-share-dua-card>শেয়ার করুন</button></div><p class="dua-card-dialog-note">সেভ বাটনে চাপলে PNG ছবিটি ডাউনলোড হবে। ফোনের Downloads/Photos অ্যাপে ছবিটি খুঁজে নিন।</p></section>';
+      backdrop.innerHTML = '<section class="dua-card-dialog" role="dialog" aria-modal="true" aria-labelledby="duaCardDialogTitle"><div class="dua-card-dialog-head"><h2 id="duaCardDialogTitle">দোয়ার ছবি তৈরি হয়েছে</h2><button type="button" class="dua-card-dialog-close" data-close-dua-card aria-label="বন্ধ করুন">×</button></div><img class="dua-card-preview" alt="তৈরি করা কুরআনের দোয়ার ছবি"><div class="dua-card-dialog-actions"><button type="button" class="dua-card-save" data-download-dua-card>গ্যালারিতে সেভ করুন</button><button type="button" data-share-dua-card>শেয়ার করুন</button></div><p class="dua-card-dialog-note">সেভ বাটনে চাপলে PNG ছবিটি ডাউনলোড হবে। ফোনের Downloads/Photos অ্যাপে ছবিটি খুঁজে নিন।</p></section>';
       document.body.append(backdrop);
       backdrop.addEventListener("click", event => {
         if (event.target === backdrop || event.target.closest("[data-close-dua-card]")) closeCardDialog();
@@ -200,13 +200,47 @@
       document.addEventListener("keydown", event => {
         if (event.key === "Escape" && !backdrop.hidden) closeCardDialog();
       });
-      backdrop.querySelector("[data-share-dua-card]").addEventListener("click", async () => {
-        const link = backdrop.querySelector("[data-download-dua-card]");
+      const saveImage = async () => {
         if (!activeCardUrl) return;
+        const saveButton = backdrop.querySelector("[data-download-dua-card]");
+        const filename = saveButton.dataset.filename || "sakinah-dua.png";
         try {
           const response = await fetch(activeCardUrl);
           const blob = await response.blob();
-          const file = new File([blob], link.download, { type: "image/png" });
+          const file = new File([blob], filename, { type: "image/png" });
+          const standalone = window.matchMedia("(display-mode: standalone)").matches ||
+            window.navigator.standalone === true;
+
+          // In installed Android PWAs, prefer the native file chooser/share sheet.
+          if (standalone && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ title: "সাকীনা — কুরআনের দোয়া", files: [file] });
+            return;
+          }
+
+          const downloadUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = downloadUrl;
+          link.download = filename;
+          link.style.display = "none";
+          document.body.append(link);
+          link.click();
+          link.remove();
+          window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 60000);
+          toast("ছবিটি ডাউনলোড শুরু হয়েছে। Downloads/Photos-এ দেখুন");
+        } catch (error) {
+          if (error && error.name === "AbortError") return;
+          if (activeCardUrl) window.open(activeCardUrl, "_blank", "noopener");
+          toast("সেভ না হলে ছবিটি খুলে মেনু থেকে ডাউনলোড করুন");
+        }
+      };
+      backdrop.querySelector("[data-download-dua-card]").addEventListener("click", saveImage);
+      backdrop.querySelector("[data-share-dua-card]").addEventListener("click", async () => {
+        if (!activeCardUrl) return;
+        const link = backdrop.querySelector("[data-download-dua-card]");
+        try {
+          const response = await fetch(activeCardUrl);
+          const blob = await response.blob();
+          const file = new File([blob], link.dataset.filename || "sakinah-dua.png", { type: "image/png" });
           if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
             await navigator.share({ title: "সাকীনা — কুরআনের দোয়া", files: [file] });
           } else {
@@ -238,8 +272,7 @@
       const preview = dialog.querySelector(".dua-card-preview");
       const saveLink = dialog.querySelector("[data-download-dua-card]");
       preview.src = activeCardUrl;
-      saveLink.href = activeCardUrl;
-      saveLink.download = filename;
+      saveLink.dataset.filename = filename;
       dialog.hidden = false;
       dialog.querySelector("[data-close-dua-card]").focus();
     } catch (error) {
