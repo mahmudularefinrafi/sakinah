@@ -1,8 +1,8 @@
 {
   "name": "sakinah",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
-  "description": "A privacy-first Bengali Quranic dua companion with separate home, search results, dua library, all 114 Quran Surahs with Arabic text and Bengali translation, personal collections, and offline PWA support",
+  "description": "A privacy-first Bengali Quranic dua companion with separate home, search results, dua library, all 114 Quran Surahs with Arabic text and Bengali translation, personal collections, local tasbih and daily amal tracking, and offline PWA support",
   "scripts": {
     "test": "node --test"
   },
