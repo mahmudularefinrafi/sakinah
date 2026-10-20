@@ -50,7 +50,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v6/);
+  assert.match(sw, /sakinah-shell-v7/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -85,12 +85,12 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v6/);
+  assert.match(sw, /sakinah-shell-v7/);
 });
 
 
 test("mobile navigation is available on every page and the service worker caches each route separately", () => {
-  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html"]) {
+  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html", "amal.html"]) {
     const html = read(name);
     assert.match(html, /id="mobileMenuToggle"/, name + " has mobile menu button");
     assert.match(html, /id="primaryNavigation"/, name + " has navigation target");
@@ -118,4 +118,38 @@ test("daily dua page provides topic filters, chronological entries, search, and 
   assert.match(js, /title:"আয়না দেখার সময়"/);
   assert.match(js, /নির্ভরযোগ্য সহিহ হাদিসের প্রমাণ স্পষ্ট নয়/);
   assert.match(sw, /"\.\/daily-duas\.html"/);
+});
+
+
+test("local tasbih and daily amal tracker are private, navigable, and cached offline", () => {
+  const html = read("amal.html");
+  const js = read("amal.js");
+  const css = read("amal.css");
+  const sw = read("service-worker.js");
+  assert.match(html, /<body data-page="amal">/);
+  assert.match(html, /id="dhikrSelect"/);
+  assert.match(html, /id="countButton"/);
+  assert.match(html, /id="amalChecklist"/);
+  assert.match(html, /id="exportData"/);
+  assert.match(js, /sakinah-tasbih-v1/);
+  assert.match(js, /sakinah-amal-tracker-v1/);
+  assert.match(js, /localStorage\.setItem|localStorage\.getItem/);
+  assert.match(js, /function todayKey/);
+  assert.match(js, /ফজরের নামাজ/);
+  assert.match(js, /সকালবেলার যিকির/);
+  assert.match(css, /@media\(max-width:700px\)/);
+  assert.match(sw, /sakinah-shell-v7/);
+  for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
+  for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
+    assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
+  }
+});
+
+test("mobile navigation opens a dropdown on small screens", () => {
+  const css = read("styles.css");
+  const nav = read("mobile-nav.js");
+  assert.match(css, /\.topbar\.menu-open nav/);
+  assert.match(css, /\.mobile-menu-toggle\{display:none/);
+  assert.match(nav, /button\.addEventListener\("click"/);
+  assert.match(nav, /aria-expanded/);
 });

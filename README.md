@@ -114,3 +114,13 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - আয়না দেখার জন্য নির্দিষ্ট সহিহ দোয়ার প্রমাণ স্পষ্ট না হওয়ায় প্রচলিত বাক্যকে সহিহ হাদিস হিসেবে উপস্থাপন করা হয়নি।
 - হোমপেজের “আরও কিছু দোয়া” কার্ড-সেকশন সরিয়ে আলাদা দৈনন্দিন দোয়ার পাতায় যাওয়ার CTA রাখা হয়েছে।
 - Service worker cache version: `sakinah-shell-v6`.
+
+
+## Local Tasbih and Daily Amal Tracker (v0.7.0)
+
+- `amal.html` provides a digital tasbih counter with selectable dhikr, configurable targets, undo/reset, and a daily total.
+- The daily amal checklist covers the five daily prayers, Quran reading/study, morning/evening adhkar, dhikr, and kindness/charity. Progress is saved per local date.
+- All tasbih and checklist records are stored in browser localStorage. No login, server, analytics, or sync is introduced.
+- A JSON backup can be downloaded and kept privately by the user. Clearing browser/site data can erase local records; use the backup if you want to preserve them.
+- The new page is added to mobile navigation and the offline app shell. Previously opened Quran surahs can be available offline from the existing browser cache; loading a surah for the first time still requires internet.
+- `npm test` includes regression checks for the new page, local storage, navigation, and offline shell.
