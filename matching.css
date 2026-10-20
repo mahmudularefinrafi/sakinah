@@ -1,0 +1,39 @@
+
+/* Accuracy-first content cues and external Quran references */
+.content-kind {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border, #dfe6dc);
+  border-radius: 999px;
+  padding: 3px 8px;
+  color: var(--muted, #617067);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  color: var(--green, #28664d);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+.source-link:hover,
+.source-link:focus-visible {
+  text-decoration: underline;
+}
+html[data-theme="dark"] .content-kind {
+  border-color: var(--border, #35443a);
+  color: var(--muted, #aebdb1);
+}
+html[data-theme="dark"] .source-link {
+  color: var(--green-light, #a8d5b5);
+}
+@media (max-width: 520px) {
+  .content-kind { font-size: 0.68rem; padding: 3px 6px; }
+  .source-link { min-height: 36px; }
+}
