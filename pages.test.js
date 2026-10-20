@@ -51,7 +51,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/other-duas\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
@@ -87,7 +87,7 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
 });
 
 
@@ -140,7 +140,7 @@ test("local tasbih and daily amal tracker are private, navigable, and cached off
   assert.match(js, /ফজরের নামাজ/);
   assert.match(js, /সকালবেলার যিকির/);
   assert.match(css, /@media\(max-width:700px\)/);
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
   for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
   for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
     assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
@@ -192,7 +192,7 @@ test("annual Hijri-Gregorian calendar and district-specific Ramadan calendar are
   assert.ok(js.includes('api("hijriCalendar/" + ramadanYear + "/9")'));
   assert.match(html, /ইসলামিক ফাউন্ডেশনের প্রকাশিত সরকারি তালিকা নয়/);
   assert.ok(css.includes(".annual-calendar"));
-  assert.ok(sw.includes("sakinah-shell-v13"));
+  assert.ok(sw.includes("sakinah-shell-v21"));
 });
 
 
@@ -213,7 +213,7 @@ test("Islamic tools opens focused single-page views from a dashboard and keeps a
   assert.match(js, /tool-back-button/);
   assert.match(css, /\.tools-dashboard-grid/);
   assert.match(css, /\.tools-section\[hidden\]/);
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
   assert.match(html, /id="prayerGrid"/);
   assert.match(html, /id="compassNeedle"/);
   assert.match(html, /id="annualCalendar"/);
@@ -237,7 +237,7 @@ test("installed mobile navigation is standalone-only, accessible, and cached", (
   assert.match(nav, /আলাদা আয়াত\/হাদিস ডাউনলোড এখনো সমর্থিত নয়/);
   assert.match(css, /body\.pwa-mobile-app \.pwa-bottom-nav/);
   assert.match(css, /env\(safe-area-inset-bottom/);
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
   assert.match(sw, /"\.\/pwa-mobile-nav\.js"/);
 });
 
@@ -250,7 +250,7 @@ test("installed PWA checks for service worker updates and reloads updated client
   assert.match(pwa, /controllerchange/);
   assert.match(pwa, /window\.location\.reload\(\)/);
   assert.match(pwa, /visibilitychange/);
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
   assert.match(sw, /self\.skipWaiting\(\)/);
   assert.match(sw, /self\.clients\.claim\(\)/);
 });
@@ -268,7 +268,22 @@ test("homepage has only the daily dua and unified Other Duas section", () => {
   assert.match(hub, /দৈনন্দিন জীবনের দোয়া/);
   assert.match(hub, /কুরআনের দোয়া সংগ্রহ/);
   assert.match(hub, /বিশেষ সূরা ও অর্থ/);
-  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /sakinah-shell-v21/);
   assert.match(sw, /"\.\/other-duas\.html"/);
   assert.match(sw, /"\.\/other-duas\.css"/);
+});
+
+
+test("Quran reader offers independent Arabic and Bengali font controls saved locally", () => {
+  const html = read("special-surahs.html");
+  const js = read("special-surahs.js");
+  const css = read("special-surahs.css");
+  assert.match(html, /id="arabicFontDown"/);
+  assert.match(html, /id="arabicFontUp"/);
+  assert.match(html, /id="bengaliFontDown"/);
+  assert.match(html, /id="bengaliFontUp"/);
+  assert.match(js, /sakinah-quran-arabic-font-size-v2/);
+  assert.match(js, /sakinah-quran-bengali-font-size-v1/);
+  assert.match(js, /--reader-bengali-size/);
+  assert.match(css, /--reader-bengali-size/);
 });

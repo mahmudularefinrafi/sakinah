@@ -15,10 +15,10 @@
     const dateLabel = $("#dailyDate");
     if (!host || !duas.length) return;
     const today = new Date();
-    const dua = core.selectDailyDua(localDateKey(today), duas);
-    if (!dua) return;
+    const dailyDuas = core.selectDailyDuas(localDateKey(today), duas, 2);
+    if (!dailyDuas.length) return;
     if (dateLabel) dateLabel.textContent = new Intl.DateTimeFormat("bn-BD", { dateStyle: "full" }).format(today);
-    host.innerHTML = typeof window.card === "function" ? window.card(dua) : "";
+    host.innerHTML = typeof window.card === "function" ? dailyDuas.map(dua => window.card(dua)).join("") : "";
     enhanceCards(host);
   }
 
