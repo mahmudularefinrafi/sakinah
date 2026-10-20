@@ -1,0 +1,28 @@
+/* Daily Dua, transparent content review, and share-card UI. */
+.daily-section{max-width:1100px;margin:0 auto;padding:58px 24px 66px;border-top:1px solid var(--line)}
+.daily-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:10px}
+.daily-heading h2{margin:5px 0 0;font-size:clamp(24px,3vw,34px);line-height:1.5}
+.daily-date{font-size:12px;color:var(--muted);margin:0 0 22px}
+.daily-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid #d8e5d7;border-radius:999px;background:#f0f6ee;color:var(--green);font-size:11px;font-weight:600}
+.daily-card-wrap{max-width:760px}
+.daily-card-wrap .dua-card{box-shadow:var(--shadow)}
+.review-notice{display:flex;align-items:flex-start;gap:12px;padding:15px 17px;margin:0 0 22px;border:1px solid #e0e6d9;border-radius:14px;background:#f2f6ee;color:var(--ink);font-size:12px;line-height:1.8}
+.review-notice strong{display:block;margin-bottom:3px}
+.review-notice p{margin:0;color:var(--muted)}
+.review-icon{font-size:18px;line-height:1.5;color:var(--green)}
+.review-status{display:block;margin-top:9px;padding:8px 10px;border-radius:9px;background:#f4f6ef;color:#66755e;font-size:10px;line-height:1.7}
+.share-card-button{flex:1;border:1px solid #cbdcc9;background:#f1f6ef;border-radius:9px;padding:8px 10px;color:#28634b;font-size:11px;font-weight:600;min-height:38px}
+.share-card-button:hover{background:#e5efe2}
+html[data-theme="dark"] .daily-section{border-color:var(--line)}
+html[data-theme="dark"] .daily-tag{background:#1b2b20;border-color:#304b36;color:#b7d9bd}
+html[data-theme="dark"] .review-notice{background:#1b2920;border-color:#34483a}
+html[data-theme="dark"] .review-status{background:#202e23;color:#b4c5b2}
+html[data-theme="dark"] .share-card-button{background:#203528;border-color:#3b5b43;color:#c6e3cb}
+html[data-theme="dark"] .share-card-button:hover{background:#294532}
+@media(max-width:560px){
+ .daily-section{padding:44px 16px}
+ .daily-heading{align-items:flex-start;flex-direction:column;gap:8px}
+ .daily-date{margin-bottom:16px}
+ .review-notice{padding:12px}
+ .share-card-button{min-height:42px}
+}
