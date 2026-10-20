@@ -210,7 +210,3 @@ html[data-theme="dark"] body.pwa-mobile-app .pwa-menu-links>a,html[data-theme="d
 html[data-theme="dark"] body.pwa-mobile-app .pwa-menu-links>a>span:first-child,html[data-theme="dark"] body.pwa-mobile-app .pwa-menu-settings>button>span:first-child,html[data-theme="dark"] body.pwa-mobile-app .pwa-offline-info>span:first-child{background:#263d30;color:#c4e2c9}
 @keyframes pwaMenuRise{from{transform:translateY(16px);opacity:.75}to{transform:translateY(0);opacity:1}}
 @media(prefers-reduced-motion:reduce){body.pwa-mobile-app .pwa-app-menu:not([hidden]){animation:none}}
-
-.reminder-strip{max-width:1180px;margin:18px auto 0;padding:18px 20px;border:1px solid var(--line,#dfe6dc);border-radius:18px;background:var(--surface,#fff);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.reminder-strip>div{flex:1;min-width:220px}.reminder-strip h2{font-size:1.15rem;margin:5px 0}.reminder-strip p{margin:4px 0;color:var(--muted,#667268);font-size:.9rem}.reminder-strip .reminder-status{width:100%;margin:0}.reminder-strip[hidden]{display:none}
-html[data-theme="dark"] .reminder-strip{background:#111a15;border-color:#304236}
