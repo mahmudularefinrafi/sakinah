@@ -13,7 +13,7 @@ test("parses an ayah range from Bengali-number references", () => {
 });
 
 test("search finds Bengali topic keywords and ignores common stop words", () => {
-  assert.deepEqual(filterDuas(duas, { query: "দুশ্চিন্তা ও ভয়" }).map(d => d.id), ["20-25"]);
+  assert.deepEqual(filterDuas(duas, { query: "দুশ্চিন্তা ও পরীক্ষা" }).map(d => d.id), ["20-25"]);
 });
 
 test("surah filter matches the selected surah only", () => {
