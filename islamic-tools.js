@@ -17,6 +17,56 @@
   $("calculationMethod").value = String(state.method || 1);
   if (Array.isArray(state.reminders) && state.reminders.length) document.querySelectorAll("#reminderOptions input").forEach(input => { input.checked = state.reminders.includes(input.value); });
 
+
+  // Single-page feature navigation: the dashboard stays simple and each tool opens in its own view.
+  const dashboard = $("toolsDashboard");
+  const toolSections = Array.from(document.querySelectorAll("[data-tool-view]"));
+  const launchCards = Array.from(document.querySelectorAll("[data-open-tool]"));
+  const backButtons = new Map();
+  for (const section of toolSections) {
+    const view = section.dataset.toolView;
+    if (!backButtons.has(view)) {
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "small-button tool-back-button";
+      back.textContent = "← সব ইসলামিক টুলস";
+      back.addEventListener("click", showDashboard);
+      backButtons.set(view, back);
+      section.insertBefore(back, section.firstChild);
+    }
+  }
+  function showDashboard() {
+    dashboard.hidden = false;
+    toolSections.forEach(section => { section.hidden = true; });
+    launchCards.forEach(card => { card.removeAttribute("aria-current"); });
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    dashboard.querySelector("button")?.focus({ preventScroll: true });
+    dashboard.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function showTool(view) {
+    const targetSections = toolSections.filter(section => section.dataset.toolView === view);
+    if (!targetSections.length) return;
+    dashboard.hidden = true;
+    toolSections.forEach(section => { section.hidden = section.dataset.toolView !== view; });
+    launchCards.forEach(card => {
+      if (card.dataset.openTool === view) card.setAttribute("aria-current", "page");
+      else card.removeAttribute("aria-current");
+    });
+    if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view);
+    const heading = targetSections[0].querySelector("h2");
+    heading?.setAttribute("tabindex", "-1");
+    heading?.focus({ preventScroll: true });
+    targetSections[0].scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  launchCards.forEach(card => card.addEventListener("click", () => showTool(card.dataset.openTool)));
+  window.addEventListener("hashchange", () => {
+    const view = location.hash.slice(1);
+    if (view && launchCards.some(card => card.dataset.openTool === view)) showTool(view);
+    else showDashboard();
+  });
+  if (location.hash && launchCards.some(card => card.dataset.openTool === location.hash.slice(1))) showTool(location.hash.slice(1));
+  else showDashboard();
+
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify({ name: state.name, lat: state.lat, lon: state.lon, method: state.method, reminders: state.reminders, district: state.district })); } catch {}
   }
