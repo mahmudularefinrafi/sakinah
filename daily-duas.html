@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f8f3">
+<script>try{if(localStorage.getItem("sakinah-theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="description" content="ঘুম থেকে ওঠা, খাওয়া, ঘুমানো, ঘর থেকে বের হওয়া, সফরসহ দৈনন্দিন জীবনের দোয়া বিষয় ও ক্রমানুসারে পড়ুন।">
+<title>দৈনন্দিন দোয়া | সাকীনা</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="daily-duas.css"><script src="daily-duas.js" defer></script><script src="pwa.js" defer></script><script src="mobile-nav.js" defer></script>
+</head>
+<body data-page="daily-duas">
+<header class="topbar"><a class="brand" href="index.html" aria-label="সাকীনা হোম"><span class="brand-mark" aria-hidden="true">س</span><span><strong>সাকীনা</strong><small>কুরআনের দোয়ায় প্রশান্তি</small></span></a><nav id="primaryNavigation" aria-label="প্রধান নেভিগেশন"><a href="index.html">হোম</a><a href="daily-duas.html" aria-current="page">দৈনন্দিন দোয়া</a><a href="library.html">কুরআনের দোয়া</a><a href="special-surahs.html">বিশেষ সূরা</a></nav><button class="icon-button mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="primaryNavigation"><span aria-hidden="true">☰</span></button><button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="ডার্ক মোড চালু করুন" title="থিম পরিবর্তন করুন" aria-pressed="false">☾</button></header>
+<main class="daily-duas-page">
+<section class="daily-hero"><span class="section-kicker">দিনের শুরু থেকে শেষ পর্যন্ত</span><h1>দৈনন্দিন জীবনের দোয়া</h1><p>জীবনের সাধারণ কাজগুলোকে আল্লাহর স্মরণে সুন্দর করে তুলুন। সময় ও বিষয় অনুযায়ী সাজানো দোয়া খুঁজুন, আরবি পড়ুন, অর্থ বুঝুন এবং সূত্র মিলিয়ে নিন।</p>
+<label class="daily-search-label" for="duaSearch">দোয়া বা বিষয় খুঁজুন<input id="duaSearch" type="search" placeholder="যেমন: ঘুম, খাওয়া, আয়না, সফর..." autocomplete="off"></label>
+<div id="topicFilters" class="topic-filters" aria-label="বিষয় বেছে নিন"><button class="topic-filter active" data-topic="all" type="button">সব দোয়া</button><button class="topic-filter" data-topic="morning" type="button">সকাল ও ঘুম</button><button class="topic-filter" data-topic="home" type="button">ঘর ও বাইরে</button><button class="topic-filter" data-topic="food" type="button">খাওয়া ও পানীয়</button><button class="topic-filter" data-topic="worship" type="button">পবিত্রতা ও মসজিদ</button><button class="topic-filter" data-topic="travel" type="button">সফর</button><button class="topic-filter" data-topic="daily" type="button">অন্যান্য পরিস্থিতি</button></div>
+<p id="duaCount" class="dua-count" role="status" aria-live="polite"></p></section>
+<section class="daily-dua-list" id="dailyDuaList" aria-label="দৈনন্দিন দোয়ার তালিকা"></section>
+<section class="daily-source-note"><strong>একটি জরুরি কথা</strong><p>দোয়ার ক্ষেত্রে নির্ভরযোগ্য সূত্র গুরুত্বপূর্ণ। যেখানে নির্দিষ্ট কোনো দোয়ার সহিহ সূত্র নিশ্চিত নয়, সেখানে সেটিকে সহিহ বলে দেখানো হয়নি। বিশেষ করে আয়না দেখার জন্য প্রচলিত নির্দিষ্ট দোয়াটির নির্ভরযোগ্য সহিহ প্রমাণ স্পষ্ট নয়; তাই সেটি হাদিস হিসেবে যোগ করা হয়নি। বাংলা উচ্চারণ আনুমানিক—সম্ভব হলে আরবি দেখে শিখুন।</p></section>
+</main>
+<footer class="footer"><a class="brand footer-brand" href="index.html"><span class="brand-mark">س</span><span><strong>সাকীনা</strong><small>কুরআনের দোয়ায় প্রশান্তি</small></span></a><p>কুরআন ও সুন্নাহর সূত্র মিলিয়ে দোয়া পড়ুন।</p><div class="footer-links"><a href="index.html">হোম</a><a href="library.html">কুরআনের দোয়া</a><a href="special-surahs.html">বিশেষ সূরা</a><a href="https://sunnah.com" target="_blank" rel="noopener noreferrer">হাদিসের সূত্র: Sunnah.com</a></div><small class="copyright">Developed by M A Rafi · © <span id="year"></span> Sakinah</small></footer>
+<div class="toast" id="dailyToast" role="status" aria-live="polite"></div>
+</body></html>
