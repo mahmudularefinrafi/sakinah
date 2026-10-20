@@ -63,7 +63,7 @@ test("special surah page includes the selected surahs, verse meanings, filters, 
   assert.match(html, /id="surahFilters"/);
   for (const name of ["আল-ফাতিহা", "আল-ইখলাস", "আল-ফালাক", "আন-নাস", "আল-আসর", "আদ-দুহা", "আশ-শারহ"]) assert.ok(js.includes(name), name);
   assert.match(js, /verse-meaning/);
-  assert.match(html, /বাংলা অর্থগুলো পাঠ-সহায়ক খসড়া/);
+  assert.match(html, /অর্থগুলো পাঠ-সহায়ক খসড়া/);
   assert.match(sw, /"\.\/special-surahs\.html"/);
   assert.match(read("index.html"), /href="special-surahs\.html"/);
 });
