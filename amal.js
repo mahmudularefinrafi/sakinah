@@ -45,5 +45,14 @@ $("#amalChecklist").addEventListener("change",event=>{const input=event.target.c
 $("#clearToday").addEventListener("click",()=>{if(!confirm("আজকের সব আমল-টিক মুছে ফেলবেন?"))return;const all=read(KEYS.tracker,{});delete all[todayKey()];write(KEYS.tracker,all);renderTracker();$("#trackerStatus").textContent="আজকের টিকগুলো মুছে ফেলা হয়েছে।"});
 $("#exportData").addEventListener("click",()=>{const backup={app:"Sakinah",formatVersion:1,exportedAt:new Date().toISOString(),tasbih:read(KEYS.tasbih,{}),targets:read(KEYS.targets,{}),tracker:read(KEYS.tracker,{})};const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="sakinah-local-backup-"+todayKey()+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("ব্যাকআপ ফাইল তৈরি হয়েছে—নিজের কাছে নিরাপদে রাখুন।")});
 $("#themeToggle").addEventListener("click",()=>{const dark=document.documentElement.dataset.theme!=="dark";applyTheme(dark);try{localStorage.setItem("sakinah-theme",dark?"dark":"light")}catch{}});
+
+const DIARY_KEY="sakinah-muhasaba-diary-v1";
+function diaryRead(){try{const v=JSON.parse(localStorage.getItem(DIARY_KEY)||"{}");return v&&typeof v==="object"?v:{}}catch{return {}}}
+function diaryRender(){const all=diaryRead(),entry=all[todayKey()]||{};$("#diaryToday").value=entry.today||"";$("#diaryTomorrow").value=entry.tomorrow||"";}
+function diarySave(){const all=diaryRead();all[todayKey()]={today:$("#diaryToday").value.slice(0,3000),tomorrow:$("#diaryTomorrow").value.slice(0,1500),updatedAt:new Date().toISOString()};try{localStorage.setItem(DIARY_KEY,JSON.stringify(all));$("#diaryStatus").textContent="আজকের ডায়েরি এই ডিভাইসে সেভ হয়েছে।";}catch{$("#diaryStatus").textContent="সেভ করা যায়নি—ডিভাইসের স্টোরেজ পরীক্ষা করুন।";}}
+$("#saveDiary").addEventListener("click",diarySave);
+$("#clearDiary").addEventListener("click",()=>{if(!confirm("আজকের ডায়েরির লেখা মুছে ফেলবেন?"))return;const all=diaryRead();delete all[todayKey()];try{localStorage.setItem(DIARY_KEY,JSON.stringify(all));diaryRender();$("#diaryStatus").textContent="আজকের লেখা মুছে ফেলা হয়েছে।";}catch{}});
+diaryRender();
+
 $("#year").textContent=new Date().getFullYear();applyTheme(document.documentElement.dataset.theme==="dark");renderTracker();renderCounter();
 })();
