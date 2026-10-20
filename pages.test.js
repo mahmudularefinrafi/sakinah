@@ -11,7 +11,7 @@ test("homepage stays focused on the feeling prompt and a small dua selection", (
   assert.match(html, /id="feeling"/);
   assert.match(html, /id="dailyDuaCard"/);
   assert.match(html, /class="home-daily-dua-link"/);
-  assert.match(html, /href="daily-duas\\.html"/);
+  assert.match(html, /href="daily-duas\.html"/);
   assert.doesNotMatch(html, /আপনার জন্য নির্বাচিত/);
   assert.doesNotMatch(html, /class="home-featured-grid dua-grid" id="libraryGrid"/);
   assert.match(html, /href="library\.html"/);
@@ -116,6 +116,6 @@ test("daily dua page provides topic filters, chronological entries, search, and 
   assert.match(js, /title:"খাওয়ার আগে"/);
   assert.match(js, /title:"পানি পান করার আগে ও পরে"/);
   assert.match(js, /title:"আয়না দেখার সময়"/);
-  assert.match(js, /আয়না দেখার জন্য/);
-  assert.match(sw, /"\\.\\/daily-duas\\.html"/);
+  assert.match(js, /নির্ভরযোগ্য সহিহ হাদিসের প্রমাণ স্পষ্ট নয়/);
+  assert.match(sw, /"\.\/daily-duas\.html"/);
 });
