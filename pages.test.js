@@ -90,7 +90,7 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
 
 
 test("mobile navigation is available on every page and the service worker caches each route separately", () => {
-  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html"]) {
+  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html", "amal.html"]) {
     const html = read(name);
     assert.match(html, /id="mobileMenuToggle"/, name + " has mobile menu button");
     assert.match(html, /id="primaryNavigation"/, name + " has navigation target");
@@ -139,7 +139,7 @@ test("local tasbih and daily amal tracker are private, navigable, and cached off
   assert.match(js, /সকালবেলার যিকির/);
   assert.match(css, /@media\(max-width:700px\)/);
   assert.match(sw, /sakinah-shell-v7/);
-  for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.match(sw, new RegExp('"' + "\\\\./" + asset.replace(".", "\\\\.") + '"'));
+  for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
   for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
     assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
   }
