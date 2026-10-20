@@ -1,5 +1,5 @@
 /* Offline-first shell cache for the static Sakinah PWA. */
-const CACHE_NAME = "sakinah-shell-v4";
+const CACHE_NAME = "sakinah-shell-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -20,6 +20,7 @@ const APP_SHELL = [
   "./library-core.js",
   "./library.js",
   "./pwa.js",
+  "./mobile-nav.js",
   "./manifest.webmanifest",
   "./favicon.svg",
   "./app-icon.svg"
@@ -54,7 +55,7 @@ self.addEventListener("fetch", event => {
         const response = await fetch(request);
         if (response && response.ok) {
           const cache = await caches.open(CACHE_NAME);
-          await cache.put(new URL("./index.html", self.registration.scope).href, response.clone());
+          await cache.put(request, response.clone());
         }
         return response;
       } catch {
