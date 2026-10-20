@@ -10,11 +10,12 @@ test("homepage stays focused on the feeling prompt and a small dua selection", (
   assert.match(html, /<body data-page="home">/);
   assert.match(html, /id="feeling"/);
   assert.match(html, /id="dailyDuaCard"/);
-  assert.match(html, /class="home-daily-dua-link"/);
-  assert.match(html, /href="daily-duas\.html"/);
+  assert.match(html, /id="other-duas" class="home-daily-dua-link"/);
+  assert.match(html, /href="other-duas\.html"/);
+  assert.doesNotMatch(html, /href="daily-duas\.html">দৈনন্দিন দোয়া<\/a>/);
   assert.doesNotMatch(html, /আপনার জন্য নির্বাচিত/);
   assert.doesNotMatch(html, /class="home-featured-grid dua-grid" id="libraryGrid"/);
-  assert.match(html, /href="library\.html"/);
+  assert.doesNotMatch(html, /href="library\.html">দোয়ার সংগ্রহ<\/a>/);
   assert.doesNotMatch(html, /id="libraryQuery"/);
   assert.doesNotMatch(html, /id="collectionGrid"/);
   assert.doesNotMatch(html, /id="collections" class="collections-section"/);
@@ -50,8 +51,9 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
   assert.match(sw, /"\.\/results\.html"/);
+  assert.match(sw, /"\.\/other-duas\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
 });
@@ -85,12 +87,12 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
 });
 
 
 test("mobile navigation is available on every page and the service worker caches each route separately", () => {
-  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html", "amal.html"]) {
+  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html", "other-duas.html", "amal.html"]) {
     const html = read(name);
     assert.match(html, /id="mobileMenuToggle"/, name + " has mobile menu button");
     assert.match(html, /id="primaryNavigation"/, name + " has navigation target");
@@ -138,7 +140,7 @@ test("local tasbih and daily amal tracker are private, navigable, and cached off
   assert.match(js, /ফজরের নামাজ/);
   assert.match(js, /সকালবেলার যিকির/);
   assert.match(css, /@media\(max-width:700px\)/);
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
   for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
   for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
     assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
@@ -190,7 +192,7 @@ test("annual Hijri-Gregorian calendar and district-specific Ramadan calendar are
   assert.ok(js.includes('api("hijriCalendar/" + ramadanYear + "/9")'));
   assert.match(html, /ইসলামিক ফাউন্ডেশনের প্রকাশিত সরকারি তালিকা নয়/);
   assert.ok(css.includes(".annual-calendar"));
-  assert.ok(sw.includes("sakinah-shell-v12"));
+  assert.ok(sw.includes("sakinah-shell-v13"));
 });
 
 
@@ -211,7 +213,7 @@ test("Islamic tools opens focused single-page views from a dashboard and keeps a
   assert.match(js, /tool-back-button/);
   assert.match(css, /\.tools-dashboard-grid/);
   assert.match(css, /\.tools-section\[hidden\]/);
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
   assert.match(html, /id="prayerGrid"/);
   assert.match(html, /id="compassNeedle"/);
   assert.match(html, /id="annualCalendar"/);
@@ -235,7 +237,7 @@ test("installed mobile navigation is standalone-only, accessible, and cached", (
   assert.match(nav, /আলাদা আয়াত\/হাদিস ডাউনলোড এখনো সমর্থিত নয়/);
   assert.match(css, /body\.pwa-mobile-app \.pwa-bottom-nav/);
   assert.match(css, /env\(safe-area-inset-bottom/);
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
   assert.match(sw, /"\.\/pwa-mobile-nav\.js"/);
 });
 
@@ -248,7 +250,25 @@ test("installed PWA checks for service worker updates and reloads updated client
   assert.match(pwa, /controllerchange/);
   assert.match(pwa, /window\.location\.reload\(\)/);
   assert.match(pwa, /visibilitychange/);
-  assert.match(sw, /sakinah-shell-v12/);
+  assert.match(sw, /sakinah-shell-v13/);
   assert.match(sw, /self\.skipWaiting\(\)/);
   assert.match(sw, /self\.clients\.claim\(\)/);
+});
+
+
+test("homepage has only the daily dua and unified Other Duas section", () => {
+  const home = read("index.html");
+  const hub = read("other-duas.html");
+  const sw = read("service-worker.js");
+  assert.match(home, /id="dailyDuaCard"/);
+  assert.match(home, /id="other-duas"/);
+  assert.match(home, /href="other-duas\.html"/);
+  assert.doesNotMatch(home, /href="daily-duas\.html">দৈনন্দিন দোয়া<\/a>/);
+  assert.doesNotMatch(home, /href="library\.html">দোয়ার সংগ্রহ<\/a>/);
+  assert.match(hub, /দৈনন্দিন জীবনের দোয়া/);
+  assert.match(hub, /কুরআনের দোয়া সংগ্রহ/);
+  assert.match(hub, /বিশেষ সূরা ও অর্থ/);
+  assert.match(sw, /sakinah-shell-v13/);
+  assert.match(sw, /"\.\/other-duas\.html"/);
+  assert.match(sw, /"\.\/other-duas\.css"/);
 });

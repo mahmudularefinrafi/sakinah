@@ -103,14 +103,20 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - The page is available from the home page and dua library and is included in the offline app shell.
 - Translation note: Bengali meanings are reading aids and should be compared with a trusted translation; no claims are made about unverified special virtues.
 
-## Page structure (v0.5.0)
+## Page structure
 
-- **Home (`index.html`)**: calm hero and private feeling prompt, daily dua, three featured duas, and the “Sakinah is here with you” support section.
+- **Home (`index.html`)**: calm hero and private feeling prompt, one separate “আজকের দোয়া” section, one “অন্যান্য দোয়া” entry point, and the support section.
 - **Search results (`results.html`)**: a focused results view opened after a visitor submits a feeling. The query moves between pages through tab-scoped `sessionStorage`, never a URL parameter, and is removed after it is read.
 - **Dua library (`library.html`)**: full curated collection, topic/surah/ayah filters, and browser-local personal collections.
 - **Hadith scope**: the current data set contains Quranic duas/ayah excerpts only. The results page explicitly avoids fabricating hadith quotes; a hadith library needs independently checked source data before it can be displayed.
 - **Page regression tests**: `pages.test.js` checks page separation, private search navigation, and offline precaching.
 
+
+## Other Duas hub
+
+- `other-duas.html` combines entry points for daily duas, the curated Quranic dua library, and special surahs in one place.
+- The homepage keeps “আজকের দোয়া” separate and shows only one additional dua section, “অন্যান্য দোয়া”.
+- The service worker caches the hub and its stylesheet under `sakinah-shell-v13`.
 
 ## দৈনন্দিন দোয়া
 
@@ -118,7 +124,7 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - অনুসন্ধান ও বিষয়ভিত্তিক ফিল্টার, আরবি পাঠ, বাংলা উচ্চারণ/অর্থ এবং সূত্রের লিংক রয়েছে।
 - আয়না দেখার জন্য নির্দিষ্ট সহিহ দোয়ার প্রমাণ স্পষ্ট না হওয়ায় প্রচলিত বাক্যকে সহিহ হাদিস হিসেবে উপস্থাপন করা হয়নি।
 - হোমপেজের “আরও কিছু দোয়া” কার্ড-সেকশন সরিয়ে আলাদা দৈনন্দিন দোয়ার পাতায় যাওয়ার CTA রাখা হয়েছে।
-- Service worker cache version: `sakinah-shell-v9`.
+- Service worker cache version: `sakinah-shell-v13`.
 
 
 ## Local Tasbih and Daily Amal Tracker (v0.7.0)
