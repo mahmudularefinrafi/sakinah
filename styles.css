@@ -67,3 +67,24 @@ html[data-theme="dark"] .toast{background:#d9eddd;color:#14241a}
  .topbar .brand{min-width:0}
  .topbar .brand small{font-size:9px}
 }
+
+
+/* Final visual polish for the homepage and dua cards */
+.search-panel{box-shadow:0 22px 65px rgba(31,61,45,.09)}
+.search-panel label{color:var(--ink)}
+.primary-button{min-height:44px;box-shadow:0 5px 14px rgba(40,99,75,.13)}
+.dua-card{position:relative;overflow:hidden}
+.dua-card::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#c8d9c5,#6e9c78,#d6c18e);opacity:.8}
+.dua-card .arabic{padding:8px 2px 12px;border-bottom:1px solid #edf1eb}
+.card-actions .small-button{min-height:38px}
+.category-pill,.chip{min-height:34px}
+html[data-theme="dark"] .search-panel{box-shadow:0 22px 65px rgba(0,0,0,.28)}
+html[data-theme="dark"] .dua-card .arabic{border-bottom-color:#2a392e}
+html[data-theme="dark"] .dua-card::before{background:linear-gradient(90deg,#3b6044,#9ac8a5,#bba36f)}
+@media(max-width:560px){
+ .hero h1{line-height:1.38}
+ .dua-card .arabic{font-size:30px;line-height:1.85}
+ .card-actions{gap:10px}
+ .card-actions .small-button{min-height:42px}
+ .chip,.category-pill{min-height:38px;padding-inline:13px}
+}
