@@ -47,7 +47,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v4/);
+  assert.match(sw, /sakinah-shell-v5/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -82,5 +82,22 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v4/);
+  assert.match(sw, /sakinah-shell-v5/);
+});
+
+
+test("mobile navigation is available on every page and the service worker caches each route separately", () => {
+  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html"]) {
+    const html = read(name);
+    assert.match(html, /id="mobileMenuToggle"/, name + " has mobile menu button");
+    assert.match(html, /id="primaryNavigation"/, name + " has navigation target");
+    assert.match(html, /mobile-nav\.js/, name + " loads mobile navigation");
+  }
+  const nav = read("mobile-nav.js");
+  assert.match(nav, /aria-expanded/);
+  assert.match(nav, /Escape/);
+  const sw = read("service-worker.js");
+  assert.match(sw, /"\.\/mobile-nav\.js"/);
+  assert.match(sw, /await cache\.put\(request, response\.clone\(\)\)/);
+  assert.doesNotMatch(sw, /cache\.put\(new URL\("\.\/index\.html"/);
 });
