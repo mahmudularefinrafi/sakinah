@@ -105,3 +105,12 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - **Dua library (`library.html`)**: full curated collection, topic/surah/ayah filters, and browser-local personal collections.
 - **Hadith scope**: the current data set contains Quranic duas/ayah excerpts only. The results page explicitly avoids fabricating hadith quotes; a hadith library needs independently checked source data before it can be displayed.
 - **Page regression tests**: `pages.test.js` checks page separation, private search navigation, and offline precaching.
+
+
+## দৈনন্দিন দোয়া
+
+- `daily-duas.html`-এ দৈনন্দিন কাজের দোয়া বিষয় ও ক্রমানুসারে সাজানো আছে—সকাল/ঘুম, ঘর থেকে বের হওয়া, খাবার-পানীয়, ওযু/মসজিদ, সফর এবং অন্যান্য পরিস্থিতি।
+- অনুসন্ধান ও বিষয়ভিত্তিক ফিল্টার, আরবি পাঠ, বাংলা উচ্চারণ/অর্থ এবং সূত্রের লিংক রয়েছে।
+- আয়না দেখার জন্য নির্দিষ্ট সহিহ দোয়ার প্রমাণ স্পষ্ট না হওয়ায় প্রচলিত বাক্যকে সহিহ হাদিস হিসেবে উপস্থাপন করা হয়নি।
+- হোমপেজের “আরও কিছু দোয়া” কার্ড-সেকশন সরিয়ে আলাদা দৈনন্দিন দোয়ার পাতায় যাওয়ার CTA রাখা হয়েছে।
+- Service worker cache version: `sakinah-shell-v6`.
