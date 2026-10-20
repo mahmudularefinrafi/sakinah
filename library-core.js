@@ -4,7 +4,7 @@
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.SakinahLibrary = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
-  const STOP_WORDS = new Set(["ও", "এবং", "বা", "এর", "জন্য", "আমার", "একটি", "দোয়া", "দোয়া", "কুরআনের", "the", "and", "or", "for", "my", "a", "an"]);
+  const STOP_WORDS = new Set(["ও", "এবং", "বা", "এর", "জন্য", "আমার", "আমি", "আমাকে", "একটি", "একটু", "অনেক", "বেশি", "খুব", "মনে", "মনটা", "নিয়ে", "নিয়ে", "হচ্ছে", "হয়", "হয়", "আছে", "আছি", "চাই", "করতে", "করছি", "কেমন", "হবে", "দোয়া", "দোয়া", "কুরআনের", "the", "and", "or", "for", "my", "a", "an"]);
 
   function latinDigits(value) {
     const digits = "০১২৩৪৫৬৭৮৯";
