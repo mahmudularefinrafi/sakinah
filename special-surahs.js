@@ -1,68 +1,70 @@
-const SURAHS = [
-{id:"fatiha",number:1,name:"আল-ফাতিহা",arabicName:"الفاتحة",meaningTitle:"সূচনা",category:"worship",tags:"ইবাদত,হেদায়াত,প্রার্থনা,নামাজ",intro:"আল্লাহর প্রশংসা, তাঁর দয়া ও সঠিক পথের প্রার্থনা।",verses:[
-["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ","পরম করুণাময়, অতি দয়ালু আল্লাহর নামে।"],
-["الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ","সমস্ত প্রশংসা আল্লাহর, যিনি সকল জগতের প্রতিপালক।"],
-["الرَّحْمَٰنِ الرَّحِيمِ","তিনি পরম করুণাময়, অতি দয়ালু।"],
-["مَالِكِ يَوْمِ الدِّينِ","প্রতিফল দিবসের মালিক।"],
-["إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ","আমরা শুধু আপনারই ইবাদত করি এবং শুধু আপনারই সাহায্য চাই।"],
-["اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ","আমাদের সরল পথ দেখান।"],
-["صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ","তাদের পথ, যাদের আপনি অনুগ্রহ করেছেন; তাদের পথ নয়, যারা ক্রোধের পাত্র হয়েছে, আর নয় পথভ্রষ্টদের পথ।"]]},
-{id:"ikhlas",number:112,name:"আল-ইখলাস",arabicName:"الإخلاص",meaningTitle:"একনিষ্ঠতা",category:"iman",tags:"ঈমান,তাওহিদ,আল্লাহ,একত্ব",intro:"আল্লাহর একত্ব ও অদ্বিতীয়তা সম্পর্কে সংক্ষিপ্ত ঘোষণা।",verses:[
-["قُلْ هُوَ اللَّهُ أَحَدٌ","বলুন, তিনি আল্লাহ, এক ও অদ্বিতীয়।"],
-["اللَّهُ الصَّمَدُ","আল্লাহ অমুখাপেক্ষী; সকলেই তাঁর মুখাপেক্ষী।"],
-["لَمْ يَلِدْ وَلَمْ يُولَدْ","তিনি কাউকে জন্ম দেননি এবং তাঁকেও জন্ম দেওয়া হয়নি।"],
-["وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ","আর তাঁর সমতুল্য কেউ নেই।"]]},
-{id:"falaq",number:113,name:"আল-ফালাক",arabicName:"الفلق",meaningTitle:"প্রভাত",category:"protection",tags:"আশ্রয়,সুরক্ষা,ভয়,অন্ধকার,হিংসা",intro:"সৃষ্টির অনিষ্ট, অন্ধকার, কুমন্ত্রণা ও হিংসা থেকে আল্লাহর আশ্রয় চাওয়া।",verses:[
-["قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ","বলুন, আমি আশ্রয় চাই প্রভাতের রবের কাছে।"],
-["مِنْ شَرِّ مَا خَلَقَ","তিনি যা সৃষ্টি করেছেন তার অনিষ্ট থেকে।"],
-["وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ","আর রাতের অন্ধকারের অনিষ্ট থেকে, যখন তা গভীর হয়।"],
-["وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ","আর গিঁটে ফুঁ দেয় এমনদের অনিষ্ট থেকে।"],
-["وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ","আর হিংসুকের অনিষ্ট থেকে, যখন সে হিংসা করে।"]]},
-{id:"nas",number:114,name:"আন-নাস",arabicName:"الناس",meaningTitle:"মানবজাতি",category:"protection",tags:"আশ্রয়,সুরক্ষা,কুমন্ত্রণা,শয়তান",intro:"অন্তরে কুমন্ত্রণা সৃষ্টিকারীর অনিষ্ট থেকে আল্লাহর আশ্রয় প্রার্থনা।",verses:[
-["قُلْ أَعُوذُ بِرَبِّ النَّاسِ","বলুন, আমি আশ্রয় চাই মানবজাতির রবের কাছে।"],
-["مَلِكِ النَّاسِ","মানবজাতির অধিপতির কাছে।"],
-["إِلَٰهِ النَّاسِ","মানবজাতির উপাস্যের কাছে।"],
-["مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ","আত্মগোপনকারী কুমন্ত্রণাদাতার অনিষ্ট থেকে।"],
-["الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ","যে মানুষের অন্তরে কুমন্ত্রণা দেয়।"],
-["مِنَ الْجِنَّةِ وَالنَّاسِ","জিন ও মানুষের মধ্য থেকে।"]]},
-{id:"asr",number:103,name:"আল-আসর",arabicName:"العصر",meaningTitle:"সময়",category:"hope",tags:"সময়,ধৈর্য,সৎকাজ,সত্য,জীবন",intro:"সময় ও মানুষের ক্ষতি থেকে বাঁচার জন্য ঈমান, সৎকাজ, সত্য ও ধৈর্যের গুরুত্ব।",verses:[
-["وَالْعَصْرِ","সময়ের শপথ।"],
-["إِنَّ الْإِنْسَانَ لَفِي خُسْرٍ","নিশ্চয়ই মানুষ ক্ষতির মধ্যে রয়েছে।"],
-["إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ","তবে তারা ছাড়া, যারা ঈমান এনেছে, সৎকাজ করেছে এবং পরস্পরকে সত্যের ও ধৈর্যের উপদেশ দিয়েছে।"]]},
-{id:"duha",number:93,name:"আদ-দুহা",arabicName:"الضحى",meaningTitle:"পূর্বাহ্নের আলো",category:"hope",tags:"আশা,দুঃখ,নিরাশা,রহমত,এতিম",intro:"কষ্টের সময় আল্লাহর অনুগ্রহ স্মরণ এবং অসহায় মানুষের প্রতি সদয় হওয়ার শিক্ষা।",verses:[
-["وَالضُّحَىٰ","শপথ পূর্বাহ্নের আলোর।"],
-["وَاللَّيْلِ إِذَا سَجَىٰ","আর রাতের, যখন তা নিস্তব্ধ হয়।"],
-["مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ","আপনার রব আপনাকে পরিত্যাগ করেননি এবং অসন্তুষ্টও হননি।"],
-["وَلَلْآخِرَةُ خَيْرٌ لَكَ مِنَ الْأُولَىٰ","আর আপনার জন্য পরবর্তী অবস্থা প্রথম অবস্থার চেয়ে উত্তম।"],
-["وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ","আপনার রব আপনাকে অবশ্যই দান করবেন, ফলে আপনি সন্তুষ্ট হবেন।"],
-["أَلَمْ يَجِدْكَ يَتِيمًا فَآوَىٰ","তিনি কি আপনাকে এতিম অবস্থায় পাননি, তারপর আশ্রয় দিয়েছেন?"],
-["وَوَجَدَكَ ضَالًّا فَهَدَىٰ","আর আপনাকে পথের সন্ধানহীন পেয়েছেন, তারপর পথ দেখিয়েছেন।"],
-["وَوَجَدَكَ عَائِلًا فَأَغْنَىٰ","আর আপনাকে অভাবগ্রস্ত পেয়েছেন, তারপর অভাবমুক্ত করেছেন।"],
-["فَأَمَّا الْيَتِيمَ فَلَا تَقْهَرْ","সুতরাং এতিমের প্রতি কঠোর হবেন না।"],
-["وَأَمَّا السَّائِلَ فَلَا تَنْهَرْ","আর সাহায্যপ্রার্থীকে ধমক দেবেন না।"],
-["وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ","আর আপনার রবের অনুগ্রহের কথা প্রকাশ করুন।"]]},
-{id:"sharh",number:94,name:"আশ-শারহ",arabicName:"الشرح",meaningTitle:"বক্ষ প্রশস্তকরণ",category:"hope",tags:"প্রশান্তি,কষ্ট,সহজতা,আশা",intro:"কষ্টের সঙ্গে সহজতা রয়েছে—এই স্মরণ এবং আল্লাহর দিকে মনোনিবেশের আহ্বান।",verses:[
-["أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ","আমি কি আপনার বক্ষ প্রশস্ত করে দিইনি?"],
-["وَوَضَعْنَا عَنْكَ وِزْرَكَ","আর আপনার থেকে আপনার বোঝা নামিয়ে দিয়েছি।"],
-["الَّذِي أَنْقَضَ ظَهْرَكَ","যা আপনার পিঠ ভারী করে তুলেছিল।"],
-["وَرَفَعْنَا لَكَ ذِكْرَكَ","আর আপনার স্মরণকে সমুন্নত করেছি।"],
-["فَإِنَّ مَعَ الْعُسْرِ يُسْرًا","নিশ্চয়ই কষ্টের সঙ্গেই স্বস্তি রয়েছে।"],
-["إِنَّ مَعَ الْعُسْرِ يُسْرًا","নিশ্চয়ই কষ্টের সঙ্গেই স্বস্তি রয়েছে।"],
-["فَإِذَا فَرَغْتَ فَانْصَبْ","অতএব যখন অবসর পান, তখন ইবাদতে পরিশ্রম করুন।"],
-["وَإِلَىٰ رَبِّكَ فَارْغَبْ","আর আপনার রবের দিকেই মনোনিবেশ করুন।"]]}
-];
-const $=s=>document.querySelector(s);
-let activeFilter="all";
-const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function renderSurahs(){
- const q=($("#surahSearch").value||"").trim().toLocaleLowerCase("bn");
- const list=SURAHS.filter(s=>(activeFilter==="all"||s.category===activeFilter)&&[s.name,s.arabicName,s.meaningTitle,s.intro,s.tags,s.verses.flat().join(" ")].join(" ").toLocaleLowerCase("bn").includes(q));
- $("#surahCount").textContent=list.length+"টি সূরা দেখানো হচ্ছে";
- $("#surahList").innerHTML=list.length?list.map(s=>'<article class="surah-card" id="surah-'+s.id+'"><div class="surah-card-head"><div class="surah-number">'+s.number+'</div><div class="surah-heading"><span class="section-kicker">সূরা '+s.number+' · '+s.meaningTitle+'</span><h2>'+escapeHtml(s.name)+'</h2><p>'+escapeHtml(s.intro)+'</p></div><div class="surah-arabic-name" lang="ar" dir="rtl">'+s.arabicName+'</div></div><div class="verse-list">'+s.verses.map((v,i)=>'<div class="verse-row"><span class="verse-number">'+(i+1)+'</span><div class="verse-content"><p class="verse-arabic" lang="ar" dir="rtl">'+v[0]+'</p><p class="verse-meaning"><strong>অর্থ:</strong> '+escapeHtml(v[1])+'</p></div></div>').join("")+'</div><div class="surah-card-footer"><span>সূরা '+s.number+' · আয়াত '+s.verses.length+'টি</span><div><button class="small-button" type="button" data-copy="'+s.id+'">আরবি ও অর্থ কপি</button> <a class="small-button" href="https://quran.com/'+s.number+'" target="_blank" rel="noopener noreferrer">Quran.com-এ পড়ুন ↗</a></div></div></article>').join(""):'<div class="surah-empty">এই খোঁজে কোনো সূরা পাওয়া যায়নি। অন্য শব্দ দিয়ে চেষ্টা করুন।</div>';
+const SURAH_NAMES = ["আল-ফাতিহা","আল-বাকারা","আলে ইমরান","আন-নিসা","আল-মায়িদা","আল-আনআম","আল-আরাফ","আল-আনফাল","আত-তাওবা","ইউনুস","হুদ","ইউসুফ","আর-রাদ","ইবরাহিম","আল-হিজর","আন-নাহল","আল-ইসরা","আল-কাহফ","মারইয়াম","ত্বা-হা","আল-আম্বিয়া","আল-হজ্জ","আল-মুমিনুন","আন-নূর","আল-ফুরকান","আশ-শুআরা","আন-নামল","আল-কাসাস","আল-আনকাবুত","আর-রূম","লুকমান","আস-সাজদা","আল-আহযাব","সাবা","ফাতির","ইয়াসিন","আস-সাফফাত","সাদ","আয-যুমার","গাফির","ফুসসিলাত","আশ-শূরা","আয-যুখরুফ","আদ-দুখান","আল-জাসিয়া","আল-আহকাফ","মুহাম্মদ","আল-ফাতহ","আল-হুজুরাত","কাফ","আয-যারিয়াত","আত-তূর","আন-নাজম","আল-কামার","আর-রহমান","আল-ওয়াকিয়া","আল-হাদিদ","আল-মুজাদিলা","আল-হাশর","আল-মুমতাহিনা","আস-সাফ","আল-জুমুআ","আল-মুনাফিকুন","আত-তাগাবুন","আত-তালাক","আত-তাহরিম","আল-মুলক","আল-কলম","আল-হাক্কাহ","আল-মাআরিজ","নূহ","আল-জিন","আল-মুযযাম্মিল","আল-মুদ্দাসসির","আল-কিয়ামাহ","আল-ইনসান","আল-মুরসালাত","আন-নাবা","আন-নাযিআত","আবাসা","আত-তাকভির","আল-ইনফিতার","আল-মুতাফফিফিন","আল-ইনশিকাক","আল-বুরুজ","আত-তারিক","আল-আলা","আল-গাশিয়াহ","আল-ফজর","আল-বালাদ","আশ-শামস","আল-লাইল","আদ-দুহা","আশ-শারহ","আত-তিন","আল-আলাক","আল-কদর","আল-বাইয়িনাহ","আয-যিলযাল","আল-আদিয়াত","আল-কারিআহ","আত-তাকাসুর","আল-আসর","আল-হুমাযাহ","আল-ফিল","কুরাইশ","আল-মাউন","আল-কাওসার","আল-কাফিরুন","আন-নাসর","আল-লাহাব","আল-ইখলাস","আল-ফালাক","আন-নাস"];
+const FEATURED = [1,18,36,55,56,67,78,93,94,97,103,105,106,107,108,109,110,111,112,113,114];
+const SHORT_SURAHS = Array.from({length:10},(_,i)=>105+i);
+const API = "https://api.alquran.cloud/v1";
+const $ = selector => document.querySelector(selector);
+let activeFilter = "featured";
+let selectedNumber = null;
+let allMetadata = [];
+const CACHE_PREFIX = "sakinah-surah-v1-";
+const META_KEY = "sakinah-surah-meta-v1";
+const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function cleanTranslation(value){return String(value||"").replace(/<[^>]*>/g," ").replace(/&nbsp;/g," ").replace(/&amp;/g,"&").replace(/\s+/g," ").trim();}
+function toast(message){const el=$("#surahToast");el.textContent=message;el.classList.add("show");clearTimeout(window.sakinahToastTimer);window.sakinahToastTimer=setTimeout(()=>el.classList.remove("show"),2400);}
+function getCachedSurah(number){try{return JSON.parse(localStorage.getItem(CACHE_PREFIX+number)||"null")}catch{return null}}
+function setCachedSurah(number,data){try{localStorage.setItem(CACHE_PREFIX+number,JSON.stringify(data));return true}catch{return false}}
+function getMetadata(){try{const saved=JSON.parse(localStorage.getItem(META_KEY)||"null");if(Array.isArray(saved)&&saved.length===114)return saved}catch{}return null}
+function makeMetadata(apiRows){return apiRows.map((row,i)=>({number:row.number,name:SURAH_NAMES[i]||row.englishName,englishName:row.englishName,arabicName:row.name,englishMeaning:row.englishNameTranslation,numberOfAyahs:row.numberOfAyahs,revelationType:row.revelationType}));}
+async function loadMetadata(){
+ const cached=getMetadata(); if(cached){allMetadata=cached;renderSurahList();return}
+ try{const response=await fetch(API+"/surah");if(!response.ok)throw new Error("metadata");const json=await response.json();if(json.code!==200||!Array.isArray(json.data)||json.data.length!==114)throw new Error("metadata");allMetadata=makeMetadata(json.data);try{localStorage.setItem(META_KEY,JSON.stringify(allMetadata))}catch{}renderSurahList();}
+ catch{allMetadata=SURAH_NAMES.map((name,i)=>({number:i+1,name,englishName:"",arabicName:"",numberOfAyahs:null}));renderSurahList();$("#surahCount").textContent="সূরার তালিকা দেখানো হচ্ছে · পূর্ণ তথ্য দেখতে ইন্টারনেট প্রয়োজন হতে পারে";}
 }
-function toast(message){const el=$("#surahToast");el.textContent=message;el.classList.add("show");clearTimeout(window.sakinahToastTimer);window.sakinahToastTimer=setTimeout(()=>el.classList.remove("show"),2200)}
-$("#surahSearch").addEventListener("input",renderSurahs);
-$("#surahFilters").addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;activeFilter=b.dataset.filter;$("#surahFilters").querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));renderSurahs()});
-$("#surahList").addEventListener("click",async e=>{const b=e.target.closest("[data-copy]");if(!b)return;const s=SURAHS.find(x=>x.id===b.dataset.copy);const text=s.name+" ("+s.arabicName+")\n"+s.verses.map((v,i)=>(i+1)+". "+v[0]+"\nঅর্থ: "+v[1]).join("\n\n")+"\nসূত্র: সূরা "+s.number;try{await navigator.clipboard.writeText(text);toast("সূরার আরবি ও অর্থ কপি হয়েছে")}catch{const t=document.createElement("textarea");t.value=text;document.body.append(t);t.select();document.execCommand("copy");t.remove();toast("সূরার আরবি ও অর্থ কপি হয়েছে")}});
-(function theme(){const b=$("#themeToggle"),meta=document.querySelector('meta[name="theme-color"]');function apply(dark){document.documentElement.dataset.theme=dark?"dark":"light";b.textContent=dark?"☀":"☾";b.setAttribute("aria-pressed",String(dark));b.setAttribute("aria-label",dark?"লাইট মোড চালু করুন":"ডার্ক মোড চালু করুন");if(meta)meta.content=dark?"#111a15":"#f7f8f3"}let dark=false;try{dark=localStorage.getItem("sakinah-theme")==="dark"}catch{}apply(dark);b.addEventListener("click",()=>{dark=!dark;apply(dark);try{localStorage.setItem("sakinah-theme",dark?"dark":"light")}catch{}})})();
-$("#year").textContent=new Date().getFullYear();renderSurahs();
+function currentNumbers(){
+ if(activeFilter==="short")return SHORT_SURAHS;
+ if(activeFilter==="featured")return FEATURED;
+ return allMetadata.map(s=>s.number);
+}
+function renderSurahList(){
+ const query=($("#surahSearch").value||"").trim().toLocaleLowerCase("bn");
+ const nums=currentNumbers();
+ const filtered=allMetadata.filter(s=>nums.includes(s.number)&&[s.name,s.englishName,s.arabicName,String(s.number),s.englishMeaning].join(" ").toLocaleLowerCase("bn").includes(query));
+ $("#surahCount").textContent=filtered.length+"টি সূরা · "+(activeFilter==="featured"?"নির্বাচিত গুরুত্বপূর্ণ সূরা":activeFilter==="short"?"সূরা আল-ফীল থেকে আন-নাস":"সম্পূর্ণ সূরা তালিকা");
+ $("#surahList").innerHTML=filtered.map(s=>'<button class="surah-list-item '+(selectedNumber===s.number?"selected":"")+'" type="button" data-open-surah="'+s.number+'"><span class="surah-list-number">'+s.number+'</span><span class="surah-list-name"><strong>'+escapeHtml(s.name)+'</strong><small>'+escapeHtml(s.englishName||"Surah "+s.number)+(s.numberOfAyahs?" · "+s.numberOfAyahs+" আয়াত":"")+'</small></span><span class="surah-list-arabic" lang="ar" dir="rtl">'+escapeHtml(s.arabicName||"اقرأ")+'</span><span class="surah-list-arrow" aria-hidden="true">↗</span></button>').join("")||'<div class="surah-empty">এই খোঁজে কোনো সূরা পাওয়া যায়নি। অন্য শব্দ দিয়ে চেষ্টা করুন।</div>';
+}
+function renderLoading(meta){$("#surahDetail").hidden=false;$("#surahDetail").innerHTML='<div class="surah-loading" role="status"><span class="loading-dot"></span><h2>'+escapeHtml(meta.name)+' লোড হচ্ছে...</h2><p>আরবি পাঠ ও বাংলা অর্থ আনা হচ্ছে। প্রথমবার ইন্টারনেট লাগবে।</p></div>';}
+function renderDetail(meta,data,offline=false){
+ const arabic=data.arabic||[], bangla=data.bangla||[];
+ $("#surahDetail").hidden=false;
+ $("#surahDetail").innerHTML='<article class="surah-card surah-reader"><div class="surah-card-head"><div class="surah-number">'+meta.number+'</div><div class="surah-heading"><span class="section-kicker">সূরা '+meta.number+' · '+(meta.numberOfAyahs||arabic.length)+' আয়াত</span><h2>'+escapeHtml(meta.name)+'</h2><p>'+escapeHtml(meta.englishName||"")+' · '+escapeHtml(meta.revelationType==="Meccan"?"মাক্কী":meta.revelationType==="Medinan"?"মাদানী":"কুরআনের সূরা")+'</p></div><div class="surah-arabic-name" lang="ar" dir="rtl">'+escapeHtml(meta.arabicName||"")+'</div></div><div class="reader-tools"><span>'+ (offline?"সংরক্ষিত পাঠ · অফলাইনে":"আরবি পাঠ ও বাংলা অনুবাদ") +'</span><button class="small-button" type="button" id="copySurah">সম্পূর্ণ সূরা কপি করুন</button><a class="small-button" href="https://quran.com/'+meta.number+'" target="_blank" rel="noopener noreferrer">Quran.com ↗</a></div><div class="verse-list">'+arabic.map((v,i)=>'<div class="verse-row"><span class="verse-number">'+(i+1)+'</span><div class="verse-content"><p class="verse-arabic" lang="ar" dir="rtl">'+escapeHtml(v)+'</p><p class="verse-meaning"><strong>অর্থ:</strong> '+escapeHtml(bangla[i]||"বাংলা অর্থ পাওয়া যায়নি।")+'</p></div></div>').join("")+'</div><div class="surah-card-footer"><span>আরবি ও বাংলা অনুবাদ: Al Quran Cloud · bn.bengali</span><span>অনুবাদ যাচাই করে পড়ুন</span></div></article>';
+ $("#copySurah").addEventListener("click",async()=>{const text=meta.name+" ("+meta.arabicName+")\n"+arabic.map((v,i)=>(i+1)+". "+v+"\nঅর্থ: "+(bangla[i]||"")).join("\n\n")+"\nসূত্র: সূরা "+meta.number;try{await navigator.clipboard.writeText(text);toast("সম্পূর্ণ সূরার আরবি ও অর্থ কপি হয়েছে")}catch{const t=document.createElement("textarea");t.value=text;document.body.append(t);t.select();document.execCommand("copy");t.remove();toast("সূরার পাঠ কপি হয়েছে")}});
+}
+async function openSurah(number){
+ const meta=allMetadata.find(s=>s.number===number)||{number,name:SURAH_NAMES[number-1],numberOfAyahs:null};
+ selectedNumber=number;renderSurahList();renderLoading(meta);
+ const cached=getCachedSurah(number);
+ if(cached){renderDetail(meta,cached,!navigator.onLine);$("#surahDetail").scrollIntoView({behavior:"smooth",block:"start"});if(!navigator.onLine)return;}
+ try{
+  const response=await fetch(API+"/surah/"+number+"/editions/quran-uthmani,bn.bengali");
+  if(!response.ok)throw new Error("surah");
+  const json=await response.json();
+  if(json.code!==200||!Array.isArray(json.data)||json.data.length<2)throw new Error("surah");
+  const ar=json.data.find(x=>x.edition&&x.edition.identifier==="quran-uthmani")||json.data[0];
+  const bn=json.data.find(x=>x.edition&&x.edition.identifier==="bn.bengali")||json.data[1];
+  const data={arabic:(ar.ayahs||[]).map(x=>x.text),bangla:(bn.ayahs||[]).map(x=>cleanTranslation(x.text)),source:"Al Quran Cloud",cachedAt:Date.now()};
+  if(!data.arabic.length)throw new Error("empty");
+  setCachedSurah(number,data);
+  const currentMeta=allMetadata.find(s=>s.number===number)||meta;
+  renderDetail(currentMeta,data,false);
+ }catch{
+  if(cached){renderDetail(meta,cached,true);toast("ইন্টারনেট পাওয়া যায়নি; আগে সংরক্ষিত পাঠ দেখানো হচ্ছে");}
+  else{$("#surahDetail").innerHTML='<div class="surah-empty"><strong>এই মুহূর্তে সূরা লোড করা যায়নি।</strong><p>ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন, অথবা Quran.com-এ সরাসরি পড়ুন।</p><a href="https://quran.com/'+number+'" target="_blank" rel="noopener noreferrer">Quran.com-এ সূরা খুলুন ↗</a> <button class="small-button" type="button" id="retrySurah">আবার চেষ্টা করুন</button></div>';$("#retrySurah").addEventListener("click",()=>openSurah(number));}
+ }
+ $("#surahDetail").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("#surahSearch").addEventListener("input",renderSurahList);
+$("#surahFilters").addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;activeFilter=b.dataset.filter;$("#surahFilters").querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));renderSurahList();});
+$("#surahList").addEventListener("click",e=>{const b=e.target.closest("[data-open-surah]");if(b)openSurah(Number(b.dataset.openSurah));});
+(function initTheme(){const b=$("#themeToggle"),meta=document.querySelector('meta[name="theme-color"]');function apply(dark){document.documentElement.dataset.theme=dark?"dark":"light";b.textContent=dark?"☀":"☾";b.setAttribute("aria-pressed",String(dark));b.setAttribute("aria-label",dark?"লাইট মোড চালু করুন":"ডার্ক মোড চালু করুন");if(meta)meta.content=dark?"#111a15":"#f7f8f3";}let dark=false;try{dark=localStorage.getItem("sakinah-theme")==="dark"}catch{}apply(dark);b.addEventListener("click",()=>{dark=!dark;apply(dark);try{localStorage.setItem("sakinah-theme",dark?"dark":"light")}catch{}})})();
+$("#year").textContent=new Date().getFullYear();
+loadMetadata();
