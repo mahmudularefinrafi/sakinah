@@ -131,3 +131,5 @@ html[data-theme="dark"] body[data-page="results"] .searched-feeling{background:#
  body[data-page="results"] .section-heading{align-items:flex-start;flex-direction:column;gap:10px}
  body[data-page="results"] .section-heading .text-button{padding:7px 0}
 }
+
+.featured-actions{display:flex;gap:10px;flex-wrap:wrap}.featured-actions .primary-button{width:auto;justify-content:center}@media(max-width:560px){.featured-actions{width:100%;flex-direction:column}.featured-actions .primary-button{width:100%}}
