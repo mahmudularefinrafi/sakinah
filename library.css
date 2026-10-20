@@ -38,3 +38,9 @@ html[data-theme="dark"] .collection-item{background:#1e2d22}
 html[data-theme="dark"] .collection-add-button{background:#203528;border-color:#3b5b43;color:#c6e3cb}
 html[data-theme="dark"] .collection-picker{background:#111a15;color:var(--ink)}
 @media(max-width:650px){.reference-filters{grid-template-columns:1fr 1fr}.reference-filters button{grid-column:1/-1;width:100%}.collection-grid{grid-template-columns:1fr}.collections-heading{align-items:start;flex-direction:column}.collection-form{align-items:stretch;flex-direction:column}.collections-section{padding:46px 16px}.library-search-tools{padding:13px}}
+
+.offline-notice{padding:9px 16px;background:#fff3d9;color:#704d0c;text-align:center;font-size:12px;border-bottom:1px solid #ead7a8}
+html[data-theme="dark"] .offline-notice{background:#3a2e18;color:#f1d79c;border-color:#5c4928}
+.install-button{font-size:11px;white-space:nowrap}
+.install-button[hidden],.offline-notice[hidden]{display:none!important}
+@media(max-width:560px){.install-button{font-size:10px;padding:8px}.offline-notice{font-size:11px}}
