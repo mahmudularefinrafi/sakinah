@@ -124,7 +124,10 @@
   }
 
   function enhanceDuaCards(scope = document) {
-    $$(".dua-card", scope).forEach(card => {
+    const cards = [];
+    if (scope && scope.nodeType === 1 && scope.matches && scope.matches(".dua-card")) cards.push(scope);
+    cards.push(...$(".dua-card", scope || document));
+    [...new Set(cards)].forEach(card => {
       const actions = card.querySelector(".card-actions");
       const idButton = card.querySelector("[data-save], [data-copy], [data-share]");
       const id = idButton && (idButton.dataset.save || idButton.dataset.copy || idButton.dataset.share);
