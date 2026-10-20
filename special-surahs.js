@@ -67,4 +67,15 @@ $("#surahFilters").addEventListener("click",e=>{const b=e.target.closest("[data-
 $("#surahList").addEventListener("click",e=>{const b=e.target.closest("[data-open-surah]");if(b)openSurah(Number(b.dataset.openSurah));});
 (function initTheme(){const b=$("#themeToggle"),meta=document.querySelector('meta[name="theme-color"]');function apply(dark){document.documentElement.dataset.theme=dark?"dark":"light";b.textContent=dark?"☀":"☾";b.setAttribute("aria-pressed",String(dark));b.setAttribute("aria-label",dark?"লাইট মোড চালু করুন":"ডার্ক মোড চালু করুন");if(meta)meta.content=dark?"#111a15":"#f7f8f3";}let dark=false;try{dark=localStorage.getItem("sakinah-theme")==="dark"}catch{}apply(dark);b.addEventListener("click",()=>{dark=!dark;apply(dark);try{localStorage.setItem("sakinah-theme",dark?"dark":"light")}catch{}})})();
 $("#year").textContent=new Date().getFullYear();
+(function(){
+const key="sakinah-quran-font-size-v1";
+const detail=document.querySelector("#surahDetail");
+let size=28;try{const n=Number(localStorage.getItem(key));if(n>=20&&n<=44)size=n}catch{}
+function apply(){if(detail)detail.style.setProperty("--reader-arabic-size",size+"px");try{localStorage.setItem(key,String(size))}catch{}}
+document.querySelector("#arabicFontDown")?.addEventListener("click",()=>{size=Math.max(20,size-2);apply()});
+document.querySelector("#arabicFontUp")?.addEventListener("click",()=>{size=Math.min(44,size+2);apply()});
+document.querySelector("#resetReadingFont")?.addEventListener("click",()=>{size=28;apply()});
+apply();
+})();
+
 loadMetadata();
