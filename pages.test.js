@@ -10,7 +10,10 @@ test("homepage stays focused on the feeling prompt and a small dua selection", (
   assert.match(html, /<body data-page="home">/);
   assert.match(html, /id="feeling"/);
   assert.match(html, /id="dailyDuaCard"/);
-  assert.match(html, /class="home-featured-grid dua-grid" id="libraryGrid"/);
+  assert.match(html, /class="home-daily-dua-link"/);
+  assert.match(html, /href="daily-duas\\.html"/);
+  assert.doesNotMatch(html, /আপনার জন্য নির্বাচিত/);
+  assert.doesNotMatch(html, /class="home-featured-grid dua-grid" id="libraryGrid"/);
   assert.match(html, /href="library\.html"/);
   assert.doesNotMatch(html, /id="libraryQuery"/);
   assert.doesNotMatch(html, /id="collectionGrid"/);
@@ -47,7 +50,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v5/);
+  assert.match(sw, /sakinah-shell-v6/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -82,12 +85,12 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v5/);
+  assert.match(sw, /sakinah-shell-v6/);
 });
 
 
 test("mobile navigation is available on every page and the service worker caches each route separately", () => {
-  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html"]) {
+  for (const name of ["index.html", "library.html", "results.html", "special-surahs.html", "daily-duas.html"]) {
     const html = read(name);
     assert.match(html, /id="mobileMenuToggle"/, name + " has mobile menu button");
     assert.match(html, /id="primaryNavigation"/, name + " has navigation target");
@@ -100,4 +103,19 @@ test("mobile navigation is available on every page and the service worker caches
   assert.match(sw, /"\.\/mobile-nav\.js"/);
   assert.match(sw, /await cache\.put\(request, response\.clone\(\)\)/);
   assert.doesNotMatch(sw, /cache\.put\(new URL\("\.\/index\.html"/);
+});
+
+
+test("daily dua page provides topic filters, chronological entries, search, and authenticity notes", () => {
+  const html = read("daily-duas.html");
+  const js = read("daily-duas.js");
+  const sw = read("service-worker.js");
+  assert.match(html, /দৈনন্দিন জীবনের দোয়া/);
+  assert.match(html, /id="topicFilters"/);
+  assert.match(js, /title:"ঘুম থেকে ওঠার দোয়া"/);
+  assert.match(js, /title:"খাওয়ার আগে"/);
+  assert.match(js, /title:"পানি পান করার আগে ও পরে"/);
+  assert.match(js, /title:"আয়না দেখার সময়"/);
+  assert.match(js, /আয়না দেখার জন্য/);
+  assert.match(sw, /"\\.\\/daily-duas\\.html"/);
 });
