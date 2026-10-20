@@ -31,6 +31,7 @@
         '">শেয়ার করুন</button></div></article>';
     };
   }
+  if (root && root.document && typeof root.renderLibrary === "function") root.renderLibrary();
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   const INTENTS = [
     { label: "দুশ্চিন্তা ও উদ্বেগ", weight: 8, phrases: [
