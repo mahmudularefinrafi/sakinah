@@ -1,5 +1,5 @@
 /* Offline-first shell cache for the static Sakinah PWA. */
-const CACHE_NAME = "sakinah-shell-v14";
+const CACHE_NAME = "sakinah-shell-v15";
 const APP_SHELL = [
   "./",
   "./index.html",
