@@ -3,3 +3,26 @@
 @media(max-width:850px){.annual-calendar{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.annual-calendar{grid-template-columns:1fr;gap:10px}.annual-month{padding:12px}.annual-day{min-height:42px}.annual-hijri{font-size:9px}.tools-heading:has(.year-picker){flex-wrap:wrap}.year-picker{min-width:120px;flex:1}.tools-heading:has(#loadRamadan) .year-picker{flex:1}.tools-heading #loadRamadan{align-self:end}}
 html[data-theme="dark"] .year-picker select,html[data-theme="dark"] .annual-month{background:#18271f;color:#eef3eb;border-color:#30483a}html[data-theme="dark"] .annual-day{background:#203328}html[data-theme="dark"] .annual-day.empty{background:transparent}html[data-theme="dark"] .annual-day.is-today{background:#2c4934}html[data-theme="dark"] .annual-gregorian{color:#eef3eb}html[data-theme="dark"] .annual-hijri{color:#b8d9be}
+
+/* Single-page Islamic tools dashboard */
+.tools-location-settings{max-width:850px;margin:18px auto 0;text-align:left}
+.tools-location-settings>summary{width:max-content;max-width:100%;margin:0 auto;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.65);color:var(--green);font-size:12px;cursor:pointer;list-style:none}
+.tools-location-settings>summary::-webkit-details-marker{display:none}
+.tools-location-settings[open]>summary{margin-bottom:10px}
+.tools-location-settings .tools-location{margin-top:0}
+.tools-dashboard{padding:28px 0 36px;border-top:1px solid var(--line)}
+.tools-dashboard-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.tool-launch-card{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-height:174px;padding:20px;text-align:left;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.8);color:var(--ink);font:inherit;cursor:pointer;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.tool-launch-card:hover,.tool-launch-card:focus-visible{transform:translateY(-2px);border-color:#8db39a;box-shadow:0 8px 24px rgba(31,61,45,.07);outline:none}
+.tool-launch-card[aria-current="page"]{border-color:var(--green)}
+.tool-card-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--mint);color:var(--green);font-size:24px;line-height:1}
+.tool-card-title{font-weight:700;font-size:16px}
+.tool-card-description{font-size:12px;color:var(--muted);line-height:1.7}
+.tool-card-action{margin-top:auto;color:var(--green);font-size:12px;font-weight:700}
+.tool-back-button{margin:0 0 18px}
+.tools-section[hidden],.tools-dashboard[hidden]{display:none!important}
+html[data-theme="dark"] .tools-location-settings>summary{background:#18271f;border-color:#30483a;color:#b8d9be}
+html[data-theme="dark"] .tool-launch-card{background:#18271f;border-color:#30483a;color:#eef3eb}
+html[data-theme="dark"] .tool-card-icon{background:#263d2e;color:#b8d9be}
+@media(max-width:850px){.tools-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.tools-dashboard{padding:22px 0 30px}.tools-dashboard-grid{grid-template-columns:1fr;gap:10px}.tool-launch-card{min-height:0;padding:16px;display:grid;grid-template-columns:44px 1fr;column-gap:12px;row-gap:3px}.tool-card-icon{grid-row:1/4;align-self:center}.tool-card-title,.tool-card-description,.tool-card-action{grid-column:2}.tool-card-title{font-size:15px}.tool-card-action{margin-top:4px}.tools-location-settings>summary{font-size:11px}}

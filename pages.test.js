@@ -50,7 +50,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v9/);
+  assert.match(sw, /sakinah-shell-v10/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -85,7 +85,7 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v9/);
+  assert.match(sw, /sakinah-shell-v10/);
 });
 
 
@@ -138,7 +138,7 @@ test("local tasbih and daily amal tracker are private, navigable, and cached off
   assert.match(js, /ফজরের নামাজ/);
   assert.match(js, /সকালবেলার যিকির/);
   assert.match(css, /@media\(max-width:700px\)/);
-  assert.match(sw, /sakinah-shell-v9/);
+  assert.match(sw, /sakinah-shell-v10/);
   for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
   for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
     assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
@@ -190,5 +190,31 @@ test("annual Hijri-Gregorian calendar and district-specific Ramadan calendar are
   assert.ok(js.includes('api("hijriCalendar/" + ramadanYear + "/9")'));
   assert.match(html, /ইসলামিক ফাউন্ডেশনের প্রকাশিত সরকারি তালিকা নয়/);
   assert.ok(css.includes(".annual-calendar"));
-  assert.ok(sw.includes("sakinah-shell-v9"));
+  assert.ok(sw.includes("sakinah-shell-v10"));
+});
+
+
+test("Islamic tools opens focused single-page views from a dashboard and keeps all tools reachable", () => {
+  const html = read("islamic-tools.html");
+  const js = read("islamic-tools.js");
+  const css = read("islamic-tools.css");
+  const sw = read("service-worker.js");
+  assert.match(html, /id="toolsDashboard"/);
+  for (const view of ["prayer-times", "qibla", "hijri-calendar", "ramadan", "reminders"]) {
+    assert.match(html, new RegExp('data-open-tool="' + view + '"'));
+    assert.match(html, new RegExp('data-tool-view="' + view + '"'));
+  }
+  assert.match(html, /<details class="tools-location-settings">/);
+  assert.match(js, /function showDashboard\(\)/);
+  assert.match(js, /function showTool\(view\)/);
+  assert.match(js, /history\.replaceState/);
+  assert.match(js, /tool-back-button/);
+  assert.match(css, /\.tools-dashboard-grid/);
+  assert.match(css, /\.tools-section\[hidden\]/);
+  assert.match(sw, /sakinah-shell-v10/);
+  assert.match(html, /id="prayerGrid"/);
+  assert.match(html, /id="compassNeedle"/);
+  assert.match(html, /id="annualCalendar"/);
+  assert.match(html, /id="ramadanCalendar"/);
+  assert.match(html, /id="enableReminders"/);
 });
