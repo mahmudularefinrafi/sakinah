@@ -37,3 +37,20 @@ No third-party JavaScript libraries are required. Google Fonts are loaded from G
 
 ## Author
 Developed by M A Rafi.
+
+
+## Matching and source transparency
+
+- `matching.js` adds deterministic intent matching for common Bengali and English phrases, including common Bengali inflections.
+- Low-confidence keyword overlaps are not presented as confirmed matches. If no relevant intent is detected, the app labels its output as general suggestions.
+- Each dua card links to its corresponding Quran.com verse for readers to compare the Arabic text and context.
+- The current Arabic snippets, Bengali transliterations, and Bengali meanings are a starter collection. Source links are provided for review, but this commit does **not** claim that every transliteration or Bengali translation has received scholarly verification. Review those items against a trusted mushaf and a reliable Bengali translation before presenting the collection as fully verified.
+- The app continues to process feeling text locally in the browser; no backend or AI API is introduced.
+
+## Run matching tests
+
+Requires Node.js 18 or later.
+
+```bash
+npm test
+```
