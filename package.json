@@ -1,0 +1,12 @@
+{
+  "name": "sakinah",
+  "version": "0.2.0",
+  "private": true,
+  "description": "A Bengali-first Quranic dua finder with local intent matching",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
