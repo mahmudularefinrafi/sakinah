@@ -124,3 +124,13 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - A JSON backup can be downloaded and kept privately by the user. Clearing browser/site data can erase local records; use the backup if you want to preserve them.
 - The new page is added to mobile navigation and the offline app shell. Previously opened Quran surahs can be available offline from the existing browser cache; loading a surah for the first time still requires internet.
 - `npm test` includes regression checks for the new page, local storage, navigation, and offline shell.
+
+
+## Annual Hijri-Gregorian and Ramadan calendar (v0.9.0)
+
+- The Islamic tools page now renders all 12 Gregorian months with each day's approximate Hijri date, a year selector, and a highlight for today.
+- Users can choose among all 64 districts of Bangladesh. District coordinates are resolved using the Open-Meteo Geocoding API filtered to Bangladesh; users can still search for a specific city/upazila or use device location.
+- The Ramadan table can be selected by Hijri year. Sehri-end and iftar are calculated from Fajr and Maghrib timings returned by AlAdhan for the selected location, using the selected calculation method (Karachi by default).
+- **Accuracy note:** these are calculation-based estimates, not a reproduction of the Islamic Foundation's official district timetable. Bangladesh's moon-sighting announcement and the local mosque/Islamic Foundation timetable take precedence; users should verify the times locally.
+- The district selector, annual calendar, and Ramadan year selection are included in the static PWA shell; service worker cache version is sakinah-shell-v9.
+- Run npm test with Node.js 18 or later to check page links, district options, calendar selectors, and cache version.
