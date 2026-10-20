@@ -165,9 +165,9 @@ test("Islamic tools page exposes prayer times, Qibla, Hijri/Ramadan calendar and
   assert.match(html, /id="ramadanCalendar"/);
   assert.match(html, /id="enableReminders"/);
   assert.match(html, /পেজটি খোলা থাকতে হবে/);
-  assert.match(js, /hijriCalendar/);
-  assert.match(js, /Notification\\.requestPermission/);
-  assert.match(js, /localStorage\\.setItem\\(KEY/);
-  assert.match(sw, /"\\.\\/islamic-tools\\.html"/);
-  assert.match(sw, /"\\.\\/islamic-tools\\.js"/);
+  assert.ok(js.includes("hijriCalendar"));
+  assert.ok(js.includes("Notification.requestPermission"));
+  assert.ok(js.includes("localStorage.setItem(KEY"));
+  assert.ok(sw.includes('"./islamic-tools.html"'));
+  assert.ok(sw.includes('"./islamic-tools.js"'));
 });
