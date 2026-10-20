@@ -107,6 +107,7 @@
       const id = idButton && (idButton.dataset.save || idButton.dataset.copy || idButton.dataset.share);
       const show = !!id && ids.has(id);
       card.hidden = !show;
+      card.style.display = show ? "" : "none";
       if (show) visible += 1;
     });
     let empty = $("#libraryEmpty");
