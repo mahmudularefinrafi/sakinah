@@ -68,3 +68,16 @@ npm test
 Run `npm test` with Node.js 18 or later. The feature tests cover date-based selection, invalid dates, share text, source URL validation, and honest review labels.
 
 **Content verification limitation:** source links make comparison possible, but a link alone is not proof that every Arabic excerpt, Bengali translation, and pronunciation has been independently reviewed. Complete that review against a trusted mushaf and reliable Bengali translation before describing the whole library as verified.
+
+
+## Quran Library, private collections, and offline PWA
+
+- **Quran Library:** search the curated dua subset by Bengali/English text, Arabic snippet, meaning, keywords, topic category, surah number, and ayah number. An ayah-range reference such as 20:25–26 can match either ayah in that displayed range.
+- **Scope transparency:** this is a small curated dua collection, not a full Quran text search engine. The app says so in the results count rather than implying it indexes all 114 surahs.
+- **Personal Dua Collection:** create named lists and add/remove duas. Collections store only collection names and dua IDs in this browser's local storage; raw emotion queries are not stored or uploaded.
+- **Offline / installable PWA:** the web app manifest and service worker cache the static app shell. Once the app has loaded online and the service worker has installed, the interface and curated dua data can be used offline. Google Fonts may fall back to system fonts offline.
+- **Privacy:** bookmarks and custom lists stay in browser storage. Clearing site data removes them. No account, backend, or network sync is introduced by these features.
+- **Tests:** `npm test` runs the existing matching/feature tests and the new library filtering and collection helper tests.
+- **PWA references:** [MDN caching guide](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Caching) and [MDN service worker guide](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
+
+**Content accuracy limitation:** filtering is only over the currently curated entries. The existing Bengali translations and transliterations remain labeled as needing independent review; this update does not claim scholarly verification.

@@ -1,0 +1,46 @@
+.library-search-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:13px;margin:0 0 20px;padding:17px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.72)}
+.library-search-tools label,.collection-form label,.collection-picker label{display:grid;gap:6px;font-size:12px;font-weight:600;color:var(--ink)}
+.library-search-tools input,.collection-form input,.collection-picker select,.collection-picker input{width:100%;min-width:0;min-height:42px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;font-size:13px}
+.library-search-tools input:focus,.collection-form input:focus,.collection-picker select:focus,.collection-picker input:focus{outline:3px solid rgba(112,159,122,.22);border-color:#82a98a}
+.reference-filters{display:grid;grid-template-columns:1fr 1fr auto;align-items:end;gap:10px}
+.library-result-count{font-size:11px;color:var(--muted);margin:0}
+.library-empty{grid-column:1/-1;padding:28px 18px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center;font-size:13px}
+.collections-section{max-width:1100px;margin:0 auto;padding:58px 24px 68px;border-top:1px solid var(--line)}
+.collections-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:22px}
+.collections-heading h2{margin:5px 0 0;font-size:clamp(24px,3vw,34px);line-height:1.5}
+.collections-heading p{max-width:430px;margin:0;color:var(--muted);font-size:12px}
+.collection-form{display:flex;align-items:end;gap:10px;padding:16px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.65);margin-bottom:18px}
+.collection-form label{flex:1}
+.collection-form button,.collection-picker button{min-height:42px}
+.collection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.collection-card{min-width:0;padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--paper)}
+.collection-card-head{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.collection-card h3{margin:0;font-size:16px;overflow-wrap:anywhere}
+.collection-card-count{font-size:11px;color:var(--muted)}
+.collection-items{display:grid;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.collection-item{display:flex;align-items:start;justify-content:space-between;gap:10px;padding:10px;border-radius:10px;background:rgba(127,150,130,.08)}
+.collection-item-title{font-size:12px;font-weight:600}
+.collection-item-ref{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+.collection-remove-dua,.collection-delete{border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);padding:5px 8px;font-size:11px}
+.collection-empty{margin:12px 0 0;color:var(--muted);font-size:12px}
+.collection-picker{width:min(460px,calc(100% - 24px));padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--paper);color:var(--ink)}
+.collection-picker::backdrop{background:rgba(17,35,25,.48);backdrop-filter:blur(4px)}
+.collection-picker-head{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.collection-picker h2{margin:0;font-size:22px}
+.collection-picker p{font-size:12px;color:var(--muted);line-height:1.8}
+.collection-picker form{display:grid;gap:10px}
+.collection-picker-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.collection-picker-actions>*{flex:1}
+.collection-add-button{border:1px solid #cbdcc9;background:#edf5eb;border-radius:10px;color:#28634b;padding:9px 12px;font-weight:600}
+html[data-theme="dark"] .library-search-tools,html[data-theme="dark"] .collection-form{background:#17221a}
+html[data-theme="dark"] .collection-card{background:#151f18}
+html[data-theme="dark"] .collection-item{background:#1e2d22}
+html[data-theme="dark"] .collection-add-button{background:#203528;border-color:#3b5b43;color:#c6e3cb}
+html[data-theme="dark"] .collection-picker{background:#111a15;color:var(--ink)}
+@media(max-width:650px){.reference-filters{grid-template-columns:1fr 1fr}.reference-filters button{grid-column:1/-1;width:100%}.collection-grid{grid-template-columns:1fr}.collections-heading{align-items:start;flex-direction:column}.collection-form{align-items:stretch;flex-direction:column}.collections-section{padding:46px 16px}.library-search-tools{padding:13px}}
+
+.offline-notice{padding:9px 16px;background:#fff3d9;color:#704d0c;text-align:center;font-size:12px;border-bottom:1px solid #ead7a8}
+html[data-theme="dark"] .offline-notice{background:#3a2e18;color:#f1d79c;border-color:#5c4928}
+.install-button{font-size:11px;white-space:nowrap}
+.install-button[hidden],.offline-notice[hidden]{display:none!important}
+@media(max-width:560px){.install-button{font-size:10px;padding:8px}.offline-notice{font-size:11px}}
