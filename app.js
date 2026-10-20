@@ -30,30 +30,5 @@ $("#findDua").addEventListener("click",()=>{const q=$("#feeling").value.trim();i
 $("#feeling").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")$("#findDua").click()});
 $("#clearResults").addEventListener("click",()=>{try{sessionStorage.removeItem("sakinah-pending-search-v1")}catch{}window.location.href="./index.html"});
 $("#savedToggle").addEventListener("click",()=>{renderSaved();$("#savedDialog").showModal()});$("#closeSaved").addEventListener("click",()=>$("#savedDialog").close());$("#savedDialog").addEventListener("click",e=>{if(e.target===$("#savedDialog"))$("#savedDialog").close()});
+if(new URLSearchParams(location.search).get("saved")==="1"){renderSaved();const dialog=$("#savedDialog");if(dialog&&!dialog.open)dialog.showModal();history.replaceState(null,"",location.pathname+location.hash);}
 $("#year").textContent=new Date().getFullYear();setSaved(getSaved());renderLibrary();
-
-/* Persistent light/dark theme */
-(function initSakinahTheme(){
-  const themeButton = document.querySelector("#themeToggle");
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const themeKey = "sakinah-theme";
-  function applyTheme(theme){
-    const dark = theme === "dark";
-    document.documentElement.dataset.theme = dark ? "dark" : "light";
-    if(themeButton){
-      themeButton.textContent = dark ? "☀" : "☾";
-      themeButton.setAttribute("aria-pressed", String(dark));
-      themeButton.setAttribute("aria-label", dark ? "লাইট মোড চালু করুন" : "ডার্ক মোড চালু করুন");
-      themeButton.title = dark ? "লাইট মোড" : "ডার্ক মোড";
-    }
-    if(themeMeta) themeMeta.setAttribute("content", dark ? "#111a15" : "#f7f8f3");
-  }
-  let initial = "light";
-  try { initial = localStorage.getItem(themeKey) === "dark" ? "dark" : "light"; } catch {}
-  applyTheme(initial);
-  if(themeButton) themeButton.addEventListener("click",()=>{
-    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(next);
-    try { localStorage.setItem(themeKey,next); } catch {}
-  });
-})();
