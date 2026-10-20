@@ -42,3 +42,18 @@ test("review status does not falsely claim scholarly verification", () => {
   assert.match(REVIEW.label, /পর্যালোচনাধীন/);
   assert.match(REVIEW.note, /যাচাই না হওয়া পর্যন্ত/);
 });
+
+
+test("daily selection can return two distinct entries for each local date", () => {
+  const { selectDailyDuas } = require("./features-core.js");
+  const selected = selectDailyDuas("2026-10-21", duas, 2);
+  assert.equal(selected.length, 2);
+  assert.notEqual(selected[0].id, selected[1].id);
+  assert.deepEqual(selectDailyDuas("2026-10-21", duas, 1).map(x => x.id), [selected[0].id]);
+  assert.deepEqual(selectDailyDuas("2026-10-21", [], 2), []);
+});
+
+test("daily selection rejects unsupported counts", () => {
+  const { selectDailyDuas } = require("./features-core.js");
+  assert.throws(() => selectDailyDuas("2026-10-21", duas, 3), /count must be 1 or 2/);
+});
