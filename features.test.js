@@ -17,7 +17,7 @@ test("daily dua advances to a different item on the next calendar day", () => {
 });
 
 test("daily dua returns null for an empty collection", () => {
-  assert.equal(selectDailyDua("2026-10-20", []).id, undefined);
+  assert.equal(selectDailyDua("2026-10-20", []), null);
 });
 
 test("invalid dates are rejected", () => {
