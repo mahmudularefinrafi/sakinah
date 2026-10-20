@@ -44,9 +44,37 @@
   });
 
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js", { scope: "./" })
-        .catch(error => console.warn("Sakinah offline support could not be registered:", error));
+    // Existing installed apps may keep an old page alive after a worker updates.
+    // Reload only clients that were already controlled before the update.
+    let refreshing = false;
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+    }
+
+    window.addEventListener("load", async () => {
+      try {
+        const registration = await navigator.serviceWorker.register("./service-worker.js", {
+          scope: "./",
+          updateViaCache: "none"
+        });
+        // Explicitly check for new assets at launch, when returning to the app,
+        // and periodically while the app remains open.
+        const checkForUpdates = () => {
+          if (navigator.onLine && document.visibilityState === "visible") {
+            registration.update().catch(() => {});
+          }
+        };
+        checkForUpdates();
+        document.addEventListener("visibilitychange", checkForUpdates);
+        window.addEventListener("online", checkForUpdates);
+        window.setInterval(checkForUpdates, 6 * 60 * 60 * 1000);
+      } catch (error) {
+        console.warn("Sakinah offline support could not be registered:", error);
+      }
     });
   }
 })();
