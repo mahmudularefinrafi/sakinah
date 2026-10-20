@@ -83,7 +83,15 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 **Content accuracy limitation:** filtering is only over the currently curated entries. The existing Bengali translations and transliterations remain labeled as needing independent review; this update does not claim scholarly verification.
 
 
-## Page structure (v0.4.0)
+## Special Surah reading section (v0.5.0)
+
+- **Special Surahs (`special-surahs.html`)**: adds Al-Fatiha, Al-Ikhlas, Al-Falaq, An-Nas, Al-Asr, Ad-Duha, and Ash-Sharh with Arabic text and verse-by-verse Bengali meanings.
+- Search by surah name, topic, and meaning; filter by faith, protection, hope, or worship.
+- Copy Arabic text with Bengali meanings and open the corresponding surah on Quran.com.
+- The page is available from the home page and dua library and is included in the offline app shell.
+- Translation note: Bengali meanings are reading aids and should be compared with a trusted translation; no claims are made about unverified special virtues.
+
+## Page structure (v0.5.0)
 
 - **Home (`index.html`)**: calm hero and private feeling prompt, daily dua, three featured duas, and the “Sakinah is here with you” support section.
 - **Search results (`results.html`)**: a focused results view opened after a visitor submits a feeling. The query moves between pages through tab-scoped `sessionStorage`, never a URL parameter, and is removed after it is read.

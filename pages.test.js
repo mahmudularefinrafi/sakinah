@@ -47,8 +47,23 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v2/);
+  assert.match(sw, /sakinah-shell-v3/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
+});
+
+
+test("special surah page includes the selected surahs, verse meanings, filters, and source note", () => {
+  const html = read("special-surahs.html");
+  const js = read("special-surahs.js");
+  const sw = read("service-worker.js");
+  assert.match(html, /data-page="special-surahs"/);
+  assert.match(html, /id="surahSearch"/);
+  assert.match(html, /id="surahFilters"/);
+  for (const name of ["আল-ফাতিহা", "আল-ইখলাস", "আল-ফালাক", "আন-নাস", "আল-আসর", "আদ-দুহা", "আশ-শারহ"]) assert.ok(js.includes(name), name);
+  assert.match(js, /verse-meaning/);
+  assert.match(html, /অর্থগুলো পাঠ-সহায়ক খসড়া/);
+  assert.match(sw, /"\.\/special-surahs\.html"/);
+  assert.match(read("index.html"), /href="special-surahs\.html"/);
 });
