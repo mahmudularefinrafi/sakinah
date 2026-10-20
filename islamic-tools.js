@@ -10,6 +10,7 @@
   if (!Number.isFinite(Number(state.lat)) || !Number.isFinite(Number(state.lon))) Object.assign(state, DEFAULT);
   $("locationName").value = state.name || DEFAULT.name;
   $("calculationMethod").value = String(state.method || 1);
+  if (Array.isArray(state.reminders) && state.reminders.length) document.querySelectorAll("#reminderOptions input").forEach(input => { input.checked = state.reminders.includes(input.value); });
 
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify({ name: state.name, lat: state.lat, lon: state.lon, method: state.method, reminders: state.reminders })); } catch {}
@@ -58,6 +59,7 @@
     const h = data.date && data.date.hijri;
     if (h) {
       state.hijriYear = parseInt(h.year, 10);
+      state.hijriMonth = parseInt(h.month?.number, 10);
       $("hijriDate").textContent = [h.day, h.month?.en, h.year, "হিজরি"].filter(Boolean).join(" ");
       $("hijriLarge").textContent = [h.day, h.month?.ar || h.month?.en, h.year, "হিজরি"].filter(Boolean).join(" ");
       $("hijriGregorian").textContent = data.date?.readable || bengaliDate();
@@ -141,7 +143,8 @@
     if (!state.hijriYear) { $("ramadanCalendar").innerHTML = '<p class="tools-footnote">হিজরি বছর নির্ণয় করা যায়নি। ইন্টারনেট সংযোগ দিয়ে আবার চেষ্টা করুন।</p>'; return; }
     $("ramadanCalendar").innerHTML = '<p class="tools-footnote">রমজানের ক্যালেন্ডার লোড হচ্ছে…</p>';
     try {
-      const rows = await api("hijriCalendar/" + state.hijriYear + "/9");
+      const ramadanYear = state.hijriMonth > 9 ? state.hijriYear + 1 : state.hijriYear;
+      const rows = await api("hijriCalendar/" + ramadanYear + "/9");
       if (!Array.isArray(rows) || !rows.length) throw new Error("empty");
       $("ramadanCalendar").innerHTML = '<table class="ramadan-table"><thead><tr><th>রমজান</th><th>তারিখ</th><th>সেহরির শেষ (ফজর)</th><th>ইফতার (মাগরিব)</th></tr></thead><tbody>' + rows.map((item, i) => '<tr><td>' + (item.date?.hijri?.day || i + 1) + '</td><td>' + gregorianLabel(item) + '</td><td>' + clock(item.timings?.Fajr) + '</td><td>' + clock(item.timings?.Maghrib) + '</td></tr>').join("") + '</tbody></table>';
     } catch { $("ramadanCalendar").innerHTML = '<p class="tools-footnote">রমজানের ক্যালেন্ডার আনা যায়নি। ইন্টারনেট সংযোগ দিয়ে আবার চেষ্টা করুন।</p>'; }
@@ -149,7 +152,8 @@
   $("loadRamadan").addEventListener("click", loadRamadan);
   function chosenReminders() { return Array.from(document.querySelectorAll("#reminderOptions input:checked")).map(el => el.value); }
   function updateReminderStatus() {
-    if (state.reminders?.length) $("reminderStatus").textContent = "চালু: " + state.reminders.map(key => bn[key]).join(", ") + "। পেজ খোলা থাকলে সময় পরীক্ষা হবে।";
+    if (state.reminders?.length && !state.timer) $("reminderStatus").textContent = "আগে নির্বাচিত: " + state.reminders.map(key => bn[key]).join(", ") + "। চালু করতে আবার রিমাইন্ডার বাটনে চাপুন।";
+    else if (state.reminders?.length) $("reminderStatus").textContent = "রিমাইন্ডার চালু: " + state.reminders.map(key => bn[key]).join(", ") + "। পেজ খোলা থাকলে সময় পরীক্ষা হবে।";
   }
   $("enableReminders").addEventListener("click", async () => {
     if (!("Notification" in window)) { $("reminderStatus").textContent = "এই ব্রাউজারে নোটিফিকেশন সমর্থিত নয়।"; return; }
