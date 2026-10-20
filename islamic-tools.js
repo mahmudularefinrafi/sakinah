@@ -89,7 +89,23 @@
     state.name = name; state.lat = Number(lat); state.lon = Number(lon); state.timings = null;
     $("locationName").value = name; save(); renderQibla(); loadPrayerTimes();
   }
-  $("searchCity").addEventListener("click", async () => {\n    const query = $("locationName").value.trim();\n    if (!query) { $("locationStatus").textContent = "একটি শহরের নাম লিখুন।"; return; }\n    $("locationStatus").textContent = "শহর খোঁজা হচ্ছে…";\n    try {\n      const response = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(query) + "&count=1&language=en&format=json");\n      if (!response.ok) throw new Error("geocoding failed");\n      const json = await response.json();\n      const place = json.results && json.results[0];\n      if (!place) throw new Error("not found");\n      const label = [place.name, place.admin1, place.country].filter(Boolean).join(", ");\n      setLocation(label, place.latitude, place.longitude);\n      $("locationStatus").textContent = "লোকেশন পাওয়া গেছে: " + label;\n    } catch { $("locationStatus").textContent = "শহর পাওয়া যায়নি। বাংলা বা ইংরেজিতে শহরের নাম লিখে আবার চেষ্টা করুন।"; }\n  });\n  $("locationName").addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); $("searchCity").click(); } });\n  $("useLocation").addEventListener("click", () => {
+  $("searchCity").addEventListener("click", async () => {
+    const query = $("locationName").value.trim();
+    if (!query) { $("locationStatus").textContent = "একটি শহরের নাম লিখুন।"; return; }
+    $("locationStatus").textContent = "শহর খোঁজা হচ্ছে…";
+    try {
+      const response = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(query) + "&count=1&language=en&format=json");
+      if (!response.ok) throw new Error("geocoding failed");
+      const json = await response.json();
+      const place = json.results && json.results[0];
+      if (!place) throw new Error("not found");
+      const label = [place.name, place.admin1, place.country].filter(Boolean).join(", ");
+      setLocation(label, place.latitude, place.longitude);
+      $("locationStatus").textContent = "লোকেশন পাওয়া গেছে: " + label;
+    } catch { $("locationStatus").textContent = "শহর পাওয়া যায়নি। বাংলা বা ইংরেজিতে শহরের নাম লিখে আবার চেষ্টা করুন।"; }
+  });
+  $("locationName").addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); $("searchCity").click(); } });
+  $("useLocation").addEventListener("click", () => {
     if (!navigator.geolocation) { $("locationStatus").textContent = "এই ব্রাউজারে লোকেশন সুবিধা নেই।"; return; }
     $("locationStatus").textContent = "লোকেশনের অনুমতি অপেক্ষা করছি…";
     navigator.geolocation.getCurrentPosition(pos => setLocation("আমার বর্তমান অবস্থান", pos.coords.latitude, pos.coords.longitude), () => { $("locationStatus").textContent = "লোকেশন পাওয়া যায়নি বা অনুমতি দেওয়া হয়নি। লাকসাম ব্যবহার করতে পারেন।"; }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 });
