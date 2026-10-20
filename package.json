@@ -1,6 +1,6 @@
 {
   "name": "sakinah",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "private": true,
   "description": "A privacy-first Bengali Quranic dua companion with full Quran reading, local tasbih and amal tracking, prayer times, Qibla, Hijri and Ramadan calendar, optional reminders, and offline PWA support",
   "scripts": {
