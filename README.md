@@ -81,3 +81,12 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - **PWA references:** [MDN caching guide](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Caching) and [MDN service worker guide](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
 
 **Content accuracy limitation:** filtering is only over the currently curated entries. The existing Bengali translations and transliterations remain labeled as needing independent review; this update does not claim scholarly verification.
+
+
+## Page structure (v0.4.0)
+
+- **Home (`index.html`)**: calm hero and private feeling prompt, daily dua, three featured duas, and the “Sakinah is here with you” support section.
+- **Search results (`results.html`)**: a focused results view opened after a visitor submits a feeling. The query moves between pages through tab-scoped `sessionStorage`, never a URL parameter, and is removed after it is read.
+- **Dua library (`library.html`)**: full curated collection, topic/surah/ayah filters, and browser-local personal collections.
+- **Hadith scope**: the current data set contains Quranic duas/ayah excerpts only. The results page explicitly avoids fabricating hadith quotes; a hadith library needs independently checked source data before it can be displayed.
+- **Page regression tests**: `pages.test.js` checks page separation, private search navigation, and offline precaching.
