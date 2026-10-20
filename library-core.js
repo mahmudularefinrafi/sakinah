@@ -23,7 +23,7 @@
   function parseReference(dua) {
     if (!dua || !/^\d+-\d+$/.test(String(dua.id || ""))) return null;
     const [surah, idAyah] = dua.id.split("-").map(Number);
-    const ref = normalize(dua.reference || "");
+    const ref = latinDigits(dua.reference || "").replace(/[–—]/g, "-");
     const match = ref.match(/(\d+)\s*:\s*(\d+)(?:\s*-\s*(\d+))?/);
     const startAyah = match ? Number(match[2]) : idAyah;
     const endAyah = match && match[3] ? Number(match[3]) : startAyah;
