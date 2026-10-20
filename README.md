@@ -113,7 +113,7 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - অনুসন্ধান ও বিষয়ভিত্তিক ফিল্টার, আরবি পাঠ, বাংলা উচ্চারণ/অর্থ এবং সূত্রের লিংক রয়েছে।
 - আয়না দেখার জন্য নির্দিষ্ট সহিহ দোয়ার প্রমাণ স্পষ্ট না হওয়ায় প্রচলিত বাক্যকে সহিহ হাদিস হিসেবে উপস্থাপন করা হয়নি।
 - হোমপেজের “আরও কিছু দোয়া” কার্ড-সেকশন সরিয়ে আলাদা দৈনন্দিন দোয়ার পাতায় যাওয়ার CTA রাখা হয়েছে।
-- Service worker cache version: `sakinah-shell-v6`.
+- Service worker cache version: `sakinah-shell-v9`.
 
 
 ## Local Tasbih and Daily Amal Tracker (v0.7.0)
@@ -124,3 +124,13 @@ Run `npm test` with Node.js 18 or later. The feature tests cover date-based sele
 - A JSON backup can be downloaded and kept privately by the user. Clearing browser/site data can erase local records; use the backup if you want to preserve them.
 - The new page is added to mobile navigation and the offline app shell. Previously opened Quran surahs can be available offline from the existing browser cache; loading a surah for the first time still requires internet.
 - `npm test` includes regression checks for the new page, local storage, navigation, and offline shell.
+
+
+## Annual Hijri-Gregorian and Ramadan calendar (v0.9.0)
+
+- The Islamic tools page now renders all 12 Gregorian months with each day's approximate Hijri date, a year selector, and a highlight for today.
+- Users can choose among all 64 districts of Bangladesh. District coordinates are resolved using the Open-Meteo Geocoding API filtered to Bangladesh; users can still search for a specific city/upazila or use device location.
+- The Ramadan table can be selected by Hijri year. Sehri-end and iftar are calculated from Fajr and Maghrib timings returned by AlAdhan for the selected location, using the selected calculation method (Karachi by default).
+- **Accuracy note:** these are calculation-based estimates, not a reproduction of the Islamic Foundation's official district timetable. Bangladesh's moon-sighting announcement and the local mosque/Islamic Foundation timetable take precedence; users should verify the times locally.
+- The district selector, annual calendar, and Ramadan year selection are included in the static PWA shell; service worker cache version is sakinah-shell-v9.
+- Run npm test with Node.js 18 or later to check page links, district options, calendar selectors, and cache version.

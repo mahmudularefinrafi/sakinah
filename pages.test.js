@@ -50,7 +50,7 @@ test("search text is passed between pages through tab-scoped storage, not the UR
 
 test("offline cache includes the separate pages and results script", () => {
   const sw = read("service-worker.js");
-  assert.match(sw, /sakinah-shell-v8/);
+  assert.match(sw, /sakinah-shell-v9/);
   assert.match(sw, /"\.\/results\.html"/);
   assert.match(sw, /"\.\/library\.html"/);
   assert.match(sw, /"\.\/results-page\.js"/);
@@ -85,7 +85,7 @@ test("full Quran reader lists all 114 surahs and supports short and featured fil
   assert.match(js, /"আর-রহমান"/);
   assert.match(js, /bn\.bengali/);
   assert.match(js, /FEATURED = \[1,18,36,55,56,67/);
-  assert.match(sw, /sakinah-shell-v8/);
+  assert.match(sw, /sakinah-shell-v9/);
 });
 
 
@@ -138,7 +138,7 @@ test("local tasbih and daily amal tracker are private, navigable, and cached off
   assert.match(js, /ফজরের নামাজ/);
   assert.match(js, /সকালবেলার যিকির/);
   assert.match(css, /@media\(max-width:700px\)/);
-  assert.match(sw, /sakinah-shell-v8/);
+  assert.match(sw, /sakinah-shell-v9/);
   for (const asset of ["amal.html", "amal.css", "amal.js"]) assert.ok(sw.includes('"./' + asset + '"'), asset + " is cached offline");
   for (const name of ["index.html", "results.html", "library.html", "special-surahs.html", "daily-duas.html"]) {
     assert.match(read(name), /href="amal\.html"/, name + " links to local tools");
@@ -170,4 +170,25 @@ test("Islamic tools page exposes prayer times, Qibla, Hijri/Ramadan calendar and
   assert.ok(js.includes("localStorage.setItem(KEY"));
   assert.ok(sw.includes('"./islamic-tools.html"'));
   assert.ok(sw.includes('"./islamic-tools.js"'));
+});
+
+
+test("annual Hijri-Gregorian calendar and district-specific Ramadan calendar are available", () => {
+  const html = read("islamic-tools.html");
+  const js = read("islamic-tools.js");
+  const css = read("islamic-tools.css");
+  const sw = read("service-worker.js");
+  const districtSelect = html.slice(html.indexOf('<select id="districtSelect"'), html.indexOf("</select>", html.indexOf('<select id="districtSelect"')) + 9);
+  const districts = [...districtSelect.matchAll(/<option value="([^"]+)"/g)].map(match => match[1]).filter(value => value !== "custom");
+  assert.equal(new Set(districts).size, 64);
+  assert.match(html, /id="calendarYear"/);
+  assert.match(html, /id="annualCalendar"/);
+  assert.match(html, /id="ramadanHijriYear"/);
+  assert.ok(js.includes("function renderAnnualCalendar"));
+  assert.ok(js.includes("islamic-umalqura"));
+  assert.ok(js.includes("countryCode=BD"));
+  assert.ok(js.includes('api("hijriCalendar/" + ramadanYear + "/9")'));
+  assert.match(html, /ইসলামিক ফাউন্ডেশনের প্রকাশিত সরকারি তালিকা নয়/);
+  assert.ok(css.includes(".annual-calendar"));
+  assert.ok(sw.includes("sakinah-shell-v9"));
 });
