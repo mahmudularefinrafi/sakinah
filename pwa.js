@@ -44,9 +44,37 @@
   });
 
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js", { scope: "./" })
-        .catch(error => console.warn("Sakinah offline support could not be registered:", error));
+    // If an already-installed app receives a new worker, reload once so the
+    // newly activated HTML/CSS/JS is actually shown instead of the old page.
+    let refreshing = false;
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+    }
+
+    window.addEventListener("load", async () => {
+      try {
+        const registration = await navigator.serviceWorker.register("./service-worker.js", {
+          scope: "./",
+          updateViaCache: "none"
+        });
+        // Browsers check on registration/navigation; explicitly request a fresh
+        // check too, and repeat while the installed app is used.
+        registration.update().catch(() => {});
+        const checkForUpdates = () => {
+          if (navigator.onLine && document.visibilityState === "visible") {
+            registration.update().catch(() => {});
+          }
+        };
+        document.addEventListener("visibilitychange", checkForUpdates);
+        window.addEventListener("online", checkForUpdates);
+        window.setInterval(checkForUpdates, 6 * 60 * 60 * 1000);
+      } catch (error) {
+        console.warn("Sakinah offline support could not be registered:", error);
+      }
     });
   }
 })();
