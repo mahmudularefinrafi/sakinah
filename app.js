@@ -31,3 +31,29 @@ $("#feeling").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key===
 $("#clearResults").addEventListener("click",()=>{$("#feeling").value="";$("#results").hidden=true;window.scrollTo({top:0,behavior:"smooth"});$("#feeling").focus()});
 $("#savedToggle").addEventListener("click",()=>{renderSaved();$("#savedDialog").showModal()});$("#closeSaved").addEventListener("click",()=>$("#savedDialog").close());$("#savedDialog").addEventListener("click",e=>{if(e.target===$("#savedDialog"))$("#savedDialog").close()});
 $("#year").textContent=new Date().getFullYear();setSaved(getSaved());renderLibrary();
+
+/* Persistent light/dark theme */
+(function initSakinahTheme(){
+  const themeButton = document.querySelector("#themeToggle");
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const themeKey = "sakinah-theme";
+  function applyTheme(theme){
+    const dark = theme === "dark";
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    if(themeButton){
+      themeButton.textContent = dark ? "☀" : "☾";
+      themeButton.setAttribute("aria-pressed", String(dark));
+      themeButton.setAttribute("aria-label", dark ? "লাইট মোড চালু করুন" : "ডার্ক মোড চালু করুন");
+      themeButton.title = dark ? "লাইট মোড" : "ডার্ক মোড";
+    }
+    if(themeMeta) themeMeta.setAttribute("content", dark ? "#111a15" : "#f7f8f3");
+  }
+  let initial = "light";
+  try { initial = localStorage.getItem(themeKey) === "dark" ? "dark" : "light"; } catch {}
+  applyTheme(initial);
+  if(themeButton) themeButton.addEventListener("click",()=>{
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try { localStorage.setItem(themeKey,next); } catch {}
+  });
+})();
