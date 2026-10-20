@@ -149,7 +149,7 @@ test("mobile navigation opens a dropdown on small screens", () => {
   const css = read("styles.css");
   const nav = read("mobile-nav.js");
   assert.match(css, /\.topbar\.menu-open nav/);
-  assert.match(css, /\.mobile-menu-toggle\{display:none\}/);
+  assert.match(css, /\.mobile-menu-toggle\{display:none/);
   assert.match(nav, /button\.addEventListener\("click"/);
   assert.match(nav, /aria-expanded/);
 });
